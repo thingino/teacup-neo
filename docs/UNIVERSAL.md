@@ -307,13 +307,19 @@ interposer is plugged in).
 host) **and WiFi + BLE** (wireless), dual-core, ample GPIO. ESP32-C3 is the budget
 cut (USB-Serial-JTAG + WiFi, fewer pins).
 
-**Part — module, not bare chip: `ESP32-S3-WROOM-1-N16R8`** (LCSC **C2913202**,
-~$3.64, 458 in stock, **JLCPCB-assemblable**). A pre-certified module integrates
-the antenna / RF match / 40 MHz crystal / 16 MB flash / 8 MB PSRAM (headroom for
-the control app + web UI + buffering a NOR image) — **no RF layout or cert.** Route
-its native-USB pins **GPIO19 (D−) / GPIO20 (D+)** to the BMC USB-C. Variants:
-`-1U` (C3013946, U.FL external antenna, for metal enclosures/range); `-N8R2` to
-shave cost; **ESP32-S3-MINI-1** if space-tight (same silicon/USB, less flash/PSRAM).
+**Part — module, not bare chip: `ESP32-S3-WROOM-1-N16R2`** (LCSC **C2913205**,
+~$3.41, ~8.7k in stock, **JLCPCB-assemblable**). Pre-certified: integrates
+antenna / RF match / 40 MHz crystal / **16 MB flash / 2 MB PSRAM** — no RF layout
+or cert.
+
+**Quad PSRAM (R2), not octal (R8), on purpose:** octal PSRAM consumes GPIO33–37,
+and the BMC is GPIO-hungry. Quad PSRAM shares the flash bus and frees those pins →
+**~34 usable GPIOs** vs ~29 on R8. The BMC needs ~24 (USB ×2, BOOTSEL, reset /
+PPRST_ / VBUS-EN, flash SPI ×6, 3× UART, I²C ×2), so R2 leaves comfortable
+headroom. 2 MB PSRAM is plenty — stream flash images in chunks, no need to buffer a
+whole 16 MB NOR. Route native-USB **GPIO19 (D−) / GPIO20 (D+)** to the BMC USB-C.
+Variants: `-1U` (C3013945, U.FL antenna for metal enclosures/range); `-N8R2` (8 MB
+flash) to shave cost; **ESP32-S3-MINI-1** if space-tight.
 
 **Control plane** (agent-facing API over USB-CDC *and/or* WiFi REST/MQTT/telnet):
 
