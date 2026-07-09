@@ -404,10 +404,6 @@ handful of the 260 positions, already part of the SoC signal set (§8).
 - **Peripheral 3.3/1.8 source**: carrier-local reg off 5V (keeps interposer
   SoC-only) — assumed yes; confirm.
 - **VCORE remote-sense** wiring in mode B (transient response).
-- Rail table is now **confirmed for the whole family** — T20 via the T10
-  datasheet (same silicon), T30 via its own datasheet. Only unstated number left
-  is T30's exact core current (no board design guide); assumed ≥1 A per the
-  XBurst1 norm and covered by the ≥3 A universal VCORE spec regardless.
 
 **Deferred (decide later):**
 - Whether to break out **dual 4-lane CSI + DVP16 simultaneously** — the one
@@ -415,6 +411,10 @@ handful of the 260 positions, already part of the SoC signal set (§8).
   headroom; revisit if multi-sensor (T40/T41) becomes a target use case.
 
 **Decided:**
+- **Rail table complete (§3)** — every SoC's core/DDR/IO voltages are confirmed
+  from datasheets (T20 via the T10 datasheet, same silicon; T30 via its own). The
+  one number no datasheet states is T30's exact core *current*, but the ≥3 A
+  universal VCORE spec covers it with margin regardless. Nothing left to resolve.
 - This is an **independent design** — the pinout is ours, NOT constrained to be
   mateable with Ingenic's TOMCAT / vendor core-board convention. MXM3 is used
   mechanically only.
