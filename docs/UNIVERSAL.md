@@ -445,6 +445,19 @@ handful of the 260 positions, already part of the SoC signal set (§8).
     and the **QFN96 has none** → our teacup-neo T41 is single-sensor by silicon, and
     T41's "dual" is MIPI+DVP on BGA only. T41 is the *weakest* multi-sensor part here.
 
+  And the **older XBurst1 parts are DVP-primary** — DVP is *mandatory*, not optional:
+  - **T10 / T20 / T21** — **12-bit DVP, no MIPI at all.** DVP is their only camera path.
+  - **T23** — 2-lane MIPI **+ 8-bit DVP** (in GPIO PA00–PA18).
+  - **T30 / T31** — 2-lane MIPI **+ 12-bit DVP** (T30 adds LVDS).
+
+  So the carrier routes a **camera-zone** of connector positions to **both** a MIPI
+  FFC **and** a DVP header; each interposer drives whichever its SoC has. This costs
+  no extra budget: **DVP data lines are GPIO-muxed** (e.g. T23 DVP = PA00–PA18) so
+  they're already in §8's ~120-GPIO count, **DVP and MIPI are mutually exclusive per
+  interposer** (a T20 module has no MIPI; a T40 module has no DVP) so they **share the
+  same camera-zone positions**, and DVP is low-speed (tens-of-MHz pixel clock) so it
+  crosses the socket trivially.
+
   **Pin budget (§8):** dual 2-lane MIPI = 2× CSI is **already in the ~180-signal
   superset**, routed to carrier FFC(s), and 260 clears it with ~65 grounds. So *all
   the cameras any single SoC can actually run at once* (2 sensors) fit on the carrier
