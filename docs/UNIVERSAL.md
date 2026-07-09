@@ -107,6 +107,11 @@ Hard SI rules (why the interposer can't just draw everything across the edge):
 - **Clock stays on the interposer.** EXCLK_XIN/XOUT are high-Z oscillator nodes;
   routing them through fingers + socket kills 24 MHz startup margin. RTC 32.768k
   crystal too, where used.
+- **Sensor MIPI stays on the interposer** (same rule as the clock). MIPI D-PHY is
+  1.5–2.5 Gbps/lane — the fastest off-chip interface once DDR is in-package — so
+  the camera FFC/FPC connector(s) mount on the interposer, tight to the SoC, and
+  the CSI pairs never cross the socket. This also makes **multi-sensor a per-module
+  option** at zero cost to the carrier pinout (§10).
 - **Mode-B VCORE sense — no analog remote-sense across the connector.** Putting the
   buck's feedback loop through the socket's finger inductance invites instability,
   and it costs pins. Instead, a three-part scheme that's DC-accurate *and*
@@ -415,12 +420,22 @@ handful of the 260 positions, already part of the SoC signal set (§8).
 
 **Open:** none outstanding — the two prior items are resolved (below).
 
-**Deferred (decide later):**
-- Whether to break out **dual 4-lane CSI + DVP16 simultaneously** — the one
-  requirement that could push the pinout past 260. Single CSI block fits with
-  headroom; revisit if multi-sensor (T40/T41) becomes a target use case.
+**Deferred (decide later):** none outstanding.
 
 **Decided:**
+- **Multi-sensor / camera = interposer-mounted FFC, not carrier pins (was
+  deferred).** The sensor block is SoC-specific and the highest-speed off-chip
+  interface (MIPI D-PHY 1.5–2.5 Gbps/lane), so — like the clock (§2) — it must not
+  cross the card-edge socket. Datasheet reality: **T41 is a single 2-lane MIPI on
+  every package**, and the **QFN96 exposes no DVP at all** (0 DVP pins) → our
+  teacup-neo T41 is single-sensor by silicon; T41's "dual" is MIPI + DVP, BGA-only.
+  **T40** is the true multi-sensor part — 4 data lanes + **two clock lanes**
+  (RX_CLKP/RX_CLKP1) = two independent 2-lane sensors. Mounting the FFC(s) on the
+  interposer makes multi-sensor a **per-module stuffing option** (T40 module = 2
+  FFC; T41-BGA = MIPI + DVP FFC; QFN96 = 1 FFC) at **zero carrier-pin cost** — which
+  is what removes the "past 260" pressure that deferred this. Carrier supplies
+  sensor power (already-budgeted 3.3/1.8) + SCCB = plain I²C; §8's breakout still
+  exposes the raw 2-lane MIPI for a carrier-side jumper if ever wanted.
 - **Peripheral 3.3/1.8 + power domains (was open):** carrier-local off the single
   5 V input — the interposer stays SoC-only. Two 5 V domains: an **always-on** rail
   (BMC + its own 3.3 LDO, upstream of the reset gate) and a **switched SoC-5 V** rail
