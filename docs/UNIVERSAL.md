@@ -15,7 +15,7 @@ from some earlier notes — this doc is canonical.)
 
 ---
 
-## 1. Connector: 0.5 mm card edge (DDR4 SO-DIMM-260 primary, MXM3-314 backup premium)
+## 1. Connector: DDR4 card-edge socket (SO-DIMM-260 primary; UDIMM-288 / MXM3-314 options)
 
 A **card-edge** connector: module side = gold fingers (a fab option, $0 parts),
 socket on the carrier. Chosen over Socket 370 (module needs machined pins — cost
@@ -24,35 +24,47 @@ Fingers escape perpendicular on their own layer; single row per face, so no
 pad-to-pad routing. We use it **mechanically only** — the pinout is ours (§8).
 4-layer carrier suffices (no PCIe/DDR crossing the edge).
 
-**Two viable sockets, same 0.5 mm edge; the interposer mates either** (design the
-carrier footprint for one, the card is universal):
+**Three viable sockets, all card-edge; the interposer mates whichever the carrier
+footprint targets** (the card is otherwise universal):
 
-| | **DDR4 SO-DIMM — 260-pin (primary)** | **MXM 3.0 — 314-pin (backup premium)** |
-|---|---|---|
-| Contacts | 260 | 314 |
-| Pitch | 0.5 mm | 0.5 mm |
-| Card thickness | **1.0 mm** | 1.2 mm |
-| Cost | **~$0.83–1.67** | ~$10.69–17 |
-| LCSC / JLCPCB | **deep multi-SKU stock → auto-placeable, sustained** | last 25 of a discontinued part → hand-solder |
-| In-stock parts | **Foxconn ASAA821-E8SB0-7H** (C2925427, 183 stock, ~$1); Foxconn ASAA821-EARB0-7H (C225725); LOTES ADDR0075-P001C (C2926865) | Amphenol 10151114-001TLF (5.0 mm, first-tier); ATTEND 125B-78C00 (~1.1k @ DigiKey) |
-| Headroom | ~65 ground after full superset | ~119 ground |
+| | **DDR4 SO-DIMM-260 (primary)** | **DDR4 UDIMM-288 desktop (option)** | **MXM3-314 (backup premium)** |
+|---|---|---|---|
+| Contacts | 260 | 288 | 314 |
+| Pitch | 0.5 mm | **0.85 mm** (coarsest) | 0.5 mm |
+| Socket length | ~68 mm | **~133 mm** (longest) | ~90 mm |
+| Card thickness | 1.0 mm | ~1.0 mm | 1.2 mm |
+| Cost | ~$0.83–1.67 | **~$0.5–1.5** | ~$10.69–17 |
+| LCSC / JLCPCB | deep, sustained | deep, sustained | last 25, discontinued |
+| Ground headroom | ~65 | ~93 | ~119 |
+| Trade | compact, cheap | coarse pitch + rugged, **big board** | fine pitch, **scarce** |
 
-**Why SO-DIMM is primary:** ~10× cheaper (~$1 vs ~$15), **deep multi-SKU LCSC
-stock** (JLCPCB-assemblable, *sustained* — DDR4 laptop-RAM market is enormous),
-first-tier makers (Foxconn/LOTES), and its 260 pins are **enough** (§8: ~180 sig +
-15 pwr + 65 gnd). **MXM3-314 is the backup premium** — a fading laptop-GPU part
-(JAE discontinued, ACES 0-stock, only 25 units on LCSC), kept only for the case
-where you want the ~54 spare grounds and don't mind hand-soldering an Amphenol
-socket. Same 0.5 mm edge either way; only the card thickness (1.0 vs 1.2 mm) and
-carrier footprint differ, so a design can be re-spun between them.
+**Why SO-DIMM-260 is primary:** compact (~68 mm), ~$1, **deep sustained LCSC stock**
+(JLCPCB-assemblable — DDR4 laptop-RAM market is enormous), and its 260 pins are
+**enough** (§8: ~180 sig + 15 pwr + 65 gnd).
+
+**DDR4 UDIMM-288 (desktop) — the "coarse-pitch / rugged / max-pins" option.** Real
+upsides: **0.85 mm pitch** (easiest, most forgiving edge fingers + most robust
+contacts), 288 pins (~93 grounds), a heavy-duty high-cycle socket, and it's as
+cheap and LCSC-stocked as SO-DIMM (Foxconn/LOTES 288-pin DDR4 DIMM sockets,
+right-angle *or* vertical). The one cost: **~133 mm long** — the socket *and* the
+full-width card can't be shortened (latches at both ends), so the carrier and
+interposer both roughly double in size vs SO-DIMM. Pick this if you'd rather have a
+larger, rugged benchtop rig with the friendliest fingers than a compact board.
+
+**MXM3-314 — backup premium.** A fading laptop-GPU part (JAE discontinued, ACES
+0-stock, only 25 on LCSC), kept for when you want max grounds and don't mind
+hand-soldering an Amphenol socket. Fine 0.5 mm pitch, ~90 mm.
+
+All three share the gold-finger edge; only pitch, length, card thickness, and the
+carrier footprint differ — a design can be re-spun between them.
 
 **Footprints / links:**
 - **DDR4 SO-DIMM Foxconn ASAA821-E8SB0-7H** (183 stock, EasyEDA footprint on LCSC): <https://lcsc.com/product-detail/Memory-Connector-DDR_FOXCONN-ASAA821-E8SB0-7H_C2925427.html>
+- **DDR4 UDIMM-288 desktop** sockets: LCSC "Memory Connector (DDR)" category (Foxconn/LOTES, right-angle + vertical) — exact PN is a quick LCSC filter (DDR4 / DIMM / 288P).
 - MXM3 Amphenol 10151114-001TLF footprint+symbol: <https://www.snapeda.com/search/?q=10151114-001TLF&search-type=parts>
 - MXM3 JAE MM70-314B1-2-R300 on LCSC (last 25): <https://www.lcsc.com/product-detail/C4818180.html>
-- Pick the SO-DIMM socket **orientation** (right-angle = card lies flat, standard,
-  low-profile) and **stack height** (~4.0 / 5.2 / 8.0 mm) to match the interposer
-  standoff — same mechanical decision you'd make for MXM3.
+- Pick socket **orientation** (right-angle = card lies flat, low-profile) and
+  **stack height** to match the interposer standoff.
 
 **Interposer mechanical:**
 - **PCB thickness = 1.0 mm ±0.1** (the SO-DIMM card-edge spec; MXM3 = 1.2 mm).
@@ -245,6 +257,7 @@ committed`:
 |---|---|---|---|---|---|
 | **SO-DIMM-260**, full superset | ~180 | ~15 | ~195 | **~65** | good (~1 GND/3 sig) |
 | SO-DIMM-260, camera-only (no A1) | ~145 | ~15 | ~160 | ~100 | excellent |
+| UDIMM-288 (desktop), full superset | ~180 | ~15 | ~195 | ~93 | very good (option) |
 | MXM3-314, full superset | ~180 | ~15 | ~195 | ~119 | luxurious (backup) |
 
 So **260 pins clears the *full* superset** (incl. A1 video) with ~65 grounds —
