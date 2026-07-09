@@ -1,50 +1,37 @@
 # Teacup Neo
 
-T41 (QFN96) adaptation of the [Teacup Rev-C](https://github.com/CapnRon/Teacup) T31 development board.
+A universal development platform for **any Ingenic SoC** — T10, T20, T21, T23, T30,
+T31, T32, T33, T40, T41, and the A1 NVR processor — regardless of package
+(QFN88 / QFN96 / BGA232 / BGA356 / BGA381).
 
-Targets **T41NQ (128MB)**, **T41XQ (256MB)**, and **T41LQ (64MB)** — all three are
-pin-identical in the QFN96 package, so one layout serves all three as a stuffing
-option (LQ needs the DDR rail set to 1.8V instead of 1.35V via the FB divider).
+Two boards:
+- a **carrier** — the universal baseboard: adjustable SoC power, all peripherals,
+  full pin breakout, and an on-board **ESP32-S3 management controller** so an agent
+  (an LLM, CI, or a human) can drive the target wired *or* wireless — flash, reset,
+  boot-select, console, and voltage-margin it hands-off;
+- a small per-SoC **interposer** — the SoC + its package fanout + clock + decoupling
+  + straps (+ optional local power / boot NOR), presented on a **DDR4 card-edge**
+  (UDIMM-288 desktop) socket.
 
-> **Where this is going:** teacup-neo is the single-SoC (T41) proof for a modular
-> platform — a universal baseboard + per-SoC interposer modules on a **DDR4 card-edge
-> socket** (UDIMM-288 desktop primary) that host any Ingenic T-series/A1 SoC
-> regardless of package. Full spec in [`docs/UNIVERSAL.md`](docs/UNIVERSAL.md).
+Swap the interposer, keep the carrier — the package stops mattering.
 
-## Status
+## The design
 
-| Stage | State |
-|-------|-------|
-| Pin map / power design | complete, verified against 3 datasheets |
-| QFN96 footprint + T41NQ symbol | KiCad-validated |
-| Schematic | **netlist-verified** — all 97 SoC pins on intended nets, 0 peripheral connections lost |
-| PCB netlist applied | 479 pads re-netted, 0 mismatch |
-| Routing | **~83% auto-routed** (FreeRouting); 78 nets + placement + 3 shorts need GUI finishing |
-| Manufacturing outputs | BOM/pos complete; Gerbers are a **draft** (board not yet fab-ready) |
+**Full spec: [`docs/UNIVERSAL.md`](docs/UNIVERSAL.md).** It covers the connector
+choice, the power architecture (adjustable VCORE/VDDR with digipot voltage control +
+margining), the verified T10→A1 rail table, clock/flash/boot, the ESP32-S3 BMC and
+autonomous flash loop, full sensor/camera support (MIPI + DVP across the whole
+family), full **A1** support (dual SATA 3.0 + dual GbE), dedicated camera-SoC
+peripherals (audio, PWM/IR-cut/IR-LED, JTAG), carrier test points, and the
+pin-breakout budget.
 
-**This board is NOT fab-ready.** The design (schematic + netlist) is complete and
-fully verified, but the PCB was auto-routed headlessly with best-effort blind
-placement. Before fabrication it needs, in the KiCad GUI:
-- placement de-overlap of the bottom-side power section (7 courtyard overlaps)
-- the 78 remaining ratsnest connections routed
-- 3 shorts / clearance violations resolved
-- **MIPI CSI routed as 100 ohm impedance-controlled differential pairs** (an
-  autorouter does not do controlled impedance)
-- SFC/DDR length + return-path review per the T41 Hardware Design Guide
+**Status: design / specification.** No open or deferred design questions remain; the
+next step is the geography-first pin assignment against a carrier floorplan.
 
-## Power tree
+## `old/` — the T41 precursor
 
-2x SY8089A1AAC buck (core 0.8V/2A EN<-1.35V, DDR 1.35V EN<-1.8V) + kept AZ1117
-LDOs (3.3V, 1.8V). EN cascade gives the datasheet power-on order. See `docs/POWER.md`.
+[`old/`](old/) holds the original single-SoC **T41 (QFN96)** board that proved the
+approach and the headless-KiCad pipeline (kicad-cli + pcbnew + FreeRouting). It's
+netlist-verified and ~83% auto-routed — details in [`old/README.md`](old/README.md).
 
-## Layout
-
-- `hw/` — KiCad project (based on TeaCup(C)3.3)
-- `hw/Manufacturing/` — draft Gerbers, drill, BOM, position, DRC report
-- `docs/` — pin maps, power design, netlist verification
-- `scripts/` — the headless generators (footprint, symbol, schematic, PCB, routing)
-- `reference/` — upstream 3.3 artifacts
-
-Built headlessly with KiCad 9.0.2 (kicad-cli + pcbnew) + FreeRouting 1.9.0.
-
-License: GPL-3.0 (inherited from upstream).
+License: GPL-3.0 (inherited from the upstream [Teacup](https://github.com/CapnRon/Teacup)).
