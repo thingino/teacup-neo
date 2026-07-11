@@ -1,0 +1,64 @@
+U8 -- ESP32-S3-WROOM-1-N16R2 -- pin assignment
+Generated from hw/sheets/bmc.kicad_sch (build_bmc.py, U8_PINS)
+
+Pin  Module signal  Net / function
+------------------------------------------------------------
+1    GND            GND flag
+2    3V3            +3V3_ALWAYS
+3    EN             HOSTED_RESET
+4    GPIO4          I2C_PWR_SDA
+5    GPIO5          I2C_PWR_SCL
+6    GPIO6          I2C_ID_SDA
+7    GPIO7          I2C_ID_SCL
+8    GPIO15         HOSTED_SPI_CLK
+9    GPIO16         HOSTED_SPI_MOSI
+10   GPIO17         UART1_TX
+11   GPIO18         UART1_RX
+12   GPIO8          BOOTSEL
+13   GPIO19         BMC_USB_DM
+14   GPIO20         BMC_USB_DP
+15   GPIO3          RESET_EN
+16   GPIO46         SW5V_EN_ALT
+17   GPIO9          SFC_IO3
+18   GPIO10         SFC_CS
+19   GPIO11         SFC_IO0
+20   GPIO12         SFC_CLK
+21   GPIO13         SFC_IO1
+22   GPIO14         SFC_IO2
+23   GPIO21         HOSTED_SPI_MISO
+24   GPIO47         HOSTED_SPI_CS
+25   GPIO48         HOSTED_HANDSHAKE
+26   GPIO45         HOSTED_DATA_READY
+27   GPIO0          U8_BOOT
+28   SPIIO6         EXP_INT
+29   SPIIO7         spare
+30   SPIDQS         EN_CS_U4
+31   GPIO38         EN_CS_U5
+32   MTCK           USB_OC1
+33   MTDO           USB_OC2
+34   MTDI           USB_OC3
+35   MTMS           spare
+36   U0RXD          ESP32_CONSOLE_RX
+37   U0TXD          ESP32_CONSOLE_TX
+38   GPIO2          SW5V_EN_BMC
+39   GPIO1          VCORE_SNS
+40   GND            (tied to pin 1's GND point)
+41   GND            (tied to pin 1's GND point)
+
+Notes:
+- 2 GPIOs genuinely spare (29, 35); everything else allocated.
+- Pins 28-30 (SPIIO6/SPIIO7/SPIDQS) are octal-PSRAM-only pins,
+  usable as plain GPIO here because this is the quad-PSRAM (R2) variant.
+- EN_CS_U4/U5 (flash CS-select) and SW5V_EN_BMC/SW5V_EN_ALT (power-domain
+  switching) are kept on native GPIO deliberately -- margin/timing testing.
+- USB_OC1-3 kept native for fast overcurrent response.
+- USB_EN1-3, PG_SW5V, PG_VCORE, PG_SW5V_ALT, SW_SENSE_1/4, DCJACK_PRESENT
+  moved off native GPIO onto U15 (TCA9555PWR, 16-bit I2C GPIO expander,
+  LCSC C465732), sharing the I2C_PWR bus (not I2C_ID -- keeps the digipot/
+  ID-EEPROM bus-isolation principle intact). Address 0x20 (A0-A2 grounded),
+  no conflict with the MCP4661 digipot's 0x28-range address.
+- HOSTED_SPI_CLK/MOSI/MISO/CS, HOSTED_HANDSHAKE, HOSTED_DATA_READY: ESP-Hosted
+  full-duplex SPI co-processor link to the interposer SoC, crossing J1 pins 43-48.
+  HOSTED_RESET (pin 3, ESP32's own EN) crosses via J1 pin 86 -- host side must
+  drive it open-drain so it doesn't fight R8's pull-up.
+- EXP_INT: U15's interrupt output, carrier-local, not crossing J1.

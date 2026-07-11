@@ -383,6 +383,18 @@ rejected candidate that was evaluated head-to-head against AP62300.
     NOR; keep the stub short or series-terminate at speed.
   - Free recovery: bootrom order **SFC → SD → USB**, so no-flash-found drops to
     SD then USB-boot on its own.
+  - **The carrier's own NOR is itself dual — soldered primary + socketed
+    alternate — matching the single-board Teacup's U4/U5 precedent exactly,
+    not a single fixed chip.** Carrier stuffs a soldered SOIC-8 **W25Q32JVSS**
+    (primary, always populated) *and* a DIP-8 socket (alternate/recovery,
+    user-populated) on the **same shared SFC bus** (CLK/IO0-3 tied together),
+    each with its own independent CE line. CE arbitration is **two
+    TS5A3166DBVR** analog switches gated from ESP32 GPIO (§9's flash-select
+    row). A 3-position manual switch (**SSSS711403**, same part as the
+    reference board's manual CS switch) sits alongside as a *sense* input the
+    ESP32 reads to decide which switch to enable — so, unlike the power-source
+    override switch below (§9), this selection currently still requires BMC
+    firmware to be running; it is not a direct hardware override.
 
 ---
 
@@ -554,15 +566,29 @@ needed, all still active and sourceable:
   **C719027**). Unchanged from the original board. 1,299 in stock (verified
   2026-07-11), JLCPCB-assemblable, existing custom footprint already built
   (`old/hw/teacup.pretty/`) — reuse it.
-- **USB-C: Korean Hroparts TYPE-C-31-M-12** (16-pin single-row, USB 2.0 +
-  power only, no SS lanes, right-angle SMD). Unchanged. 116,310 in stock at
-  LCSC (verified 2026-07-11), extremely common part (also used on e.g. Keebio
-  keyboards) — deep, reliable supply.
+- **USB-C ×2: Korean Hroparts TYPE-C-31-M-12** (16-pin single-row, USB 2.0 +
+  power only, no SS lanes, right-angle SMD). Unchanged part, now two
+  instances: `J2` (alt power input, §9) and `J9` (the BMC's dedicated port,
+  §9 — data-only as far as the rest of the carrier is concerned, its VBUS
+  never leaves the BMC domain). 116,310 in stock at LCSC (verified
+  2026-07-11), extremely common part (also used on e.g. Keebio keyboards) —
+  deep, reliable supply.
 - **USB-A: TE Connectivity 292303-7** (4-pos, right-angle SMD, USB 2.0 host
   receptacle). Unchanged. 743 in stock at DigiKey (verified 2026-07-11) —
   thinner stock than the others but still active/current, and it's the exact
   part with an existing proven footprint, so not worth switching to a
   cheaper sibling (e.g. 292303-1) just to save cost on a low-volume build.
+  **`J3`'s D+/D- share one net pair with `J2`'s** (`USBA_HOST_DP`/
+  `USBA_HOST_DM`) — one logical USB host controller on the interposer SoC,
+  reachable through either physical connector. This is for peripheral use
+  only (a USB WiFi dongle, keyboard, hub, etc.) — `J2`'s data lines carry no
+  power semantics of their own; `J2`'s VBUS is a separate, independent net
+  (`ALTUSB_VBUS`) feeding the power-OR circuit above, not related to the data
+  pair at all. The shared pair crosses the DDR4 connector on `J1` pins 41/42
+  (unit 1), the first two of the eight pins previously held as unassigned
+  placeholders (`RESERVED_P41`.. `RESERVED_P48`, §8) pending the full
+  per-SoC superset pass — chosen adjacent to the pin 36-40 GND run for some
+  differential-pair flanking. The remaining six stay reserved.
 - **DC jack: Würth Elektronik 694106301002** (WR-DC right-angle THT barrel
   jack, 2.1 mm ID / 5.5 mm OD, 5 A, with an integrated normally-closed
   presence-detect switch). The original BOM listed the family placeholder
@@ -668,13 +694,156 @@ antenna / RF match / 40 MHz crystal / **16 MB flash / 2 MB PSRAM** — no RF
 layout or cert.
 
 **Quad PSRAM (R2), not octal (R8), on purpose:** octal PSRAM consumes GPIO33–37,
-and the BMC is GPIO-hungry. Quad PSRAM shares the flash bus and frees those pins →
-**~34 usable GPIOs** vs ~29 on R8. The BMC needs ~24 (USB ×2, BOOTSEL, reset /
-PPRST_ / VBUS-EN, flash SPI ×6, 3× UART, I²C ×2), so R2 leaves comfortable
-headroom. 2 MB PSRAM is plenty — stream flash images in chunks, no need to buffer a
-whole 16 MB NOR. Route native-USB **GPIO19 (D−) / GPIO20 (D+)** to the BMC USB-C.
+and the BMC is GPIO-hungry. Quad PSRAM shares the flash bus and frees those pins.
+(A no-PSRAM variant would *not* free anything further — GPIO35-37's pin cost is
+specifically an octal-PSRAM/octal-flash thing; quad PSRAM and no PSRAM are
+pin-equivalent, confirmed against Espressif's own pin documentation — so R2 is
+already the optimum, dropping PSRAM entirely would only cost the buffer space an
+ESP-Hosted link wants, for zero pin gain.) 2 MB PSRAM is plenty — stream flash
+images in chunks, no need to buffer a whole 16 MB NOR. Route native-USB
+**GPIO19 (D−) / GPIO20 (D+)** to the BMC USB-C.
+
+**GPIO budget — fully allocated, by design, via an I²C expander.** All 36
+GPIO-capable pins on the module are in use; there is no spare headroom left on
+native silicon. Two functions (four pins) are deliberately kept native rather
+than moved off-chip, because margin/timing testing depends on driving them
+directly rather than through an I²C-mediated expander: **flash chip-select**
+(`EN_CS_U4`/`EN_CS_U5`) and **power-domain switching** (`SW5V_EN_BMC`/`SW5V_EN_ALT`).
+**USB overcurrent** (`USB_OC1-3`) is also kept native, for fast hardware fault
+response rather than polled status. Everything else that's a slow status/enable
+signal — `USB_EN1-3`, `PG_SW5V`/`PG_VCORE`/`PG_SW5V_ALT`, `SW_SENSE_1`/`SW_SENSE_4`,
+`DCJACK_PRESENT` (9 signals) — moved to **`U15`, a TCA9555PWR** (TI, TSSOP-24,
+16-bit I²C/SMBus expander, LCSC **C465732**, 4,690 in stock, $0.817 @ 1+/$0.3736
+@ 1,000+, verified 2026-07-12). It shares the **`I2C_PWR`** bus (not `I2C_ID`) —
+putting it on the interposer-crossing bus would reintroduce the exact
+digipot/carrier-ID-EEPROM fault-coupling this doc already rules out above.
+Address pins grounded → `0x20`, which doesn't collide with the digipot's
+`0101`-prefixed (`0x28`-range) address regardless of the digipot's own strapping
+— confirmed, the two parts' address families can't overlap. `U15`'s own `~INT`
+pin (open-drain, active low) is wired to a spare ESP32 GPIO for interrupt-driven
+updates rather than pure polling. Net result: 9 pins freed, 6 spent on the
+ESP-Hosted link below, **2 pins left genuinely spare.**
+
+**ESP-Hosted: the BMC's WiFi/BLE, exposed to the interposer SoC over SPI, not
+SDIO.** [Espressif's ESP-Hosted](https://github.com/espressif/esp_hosted)
+framework lets the SoC treat the ESP32-S3 as a wireless co-processor — the SoC
+sends RPC calls (associate, open a BLE connection, etc.) over a transport link,
+the ESP32-S3 runs the actual 802.11/BLE stack and radio locally and relays
+data back; on a Linux host this shows up as a normal network interface via a
+kernel driver. **ESP32-S3 has no SDIO slave peripheral at all** (confirmed
+against Espressif's own docs: its SD/MMC controller is host-only, unlike
+classic ESP32, C6, C5, and C61, which do support SDIO slave) — this was checked
+specifically because `MSC1` (a spare SD/MMC controller on some T-series SoCs)
+looked like the obvious channel and isn't usable for it regardless of which
+MSC number is picked. The transport is **full-duplex SPI** instead: `HOSTED_SPI_CLK`/
+`_MOSI`/`_MISO`/`_CS`, plus `HOSTED_HANDSHAKE` and `HOSTED_DATA_READY` (both
+co-processor→host, flow-control/data-pending signals), crossing `J1` on pins
+43-48 — the last of unit 1's reserved pins. The 7th ESP-Hosted signal, reset,
+needs no dedicated GPIO: per Espressif's own reference wiring it ties straight
+to the co-processor's own EN/RST pin rather than a GPIO, so `U8`'s `EN` pin
+(previously carrier-local, pulled up by `R8`) is now also `HOSTED_RESET`,
+crossing `J1` on pin 86 — the SoC-side driver must be configured open-drain so
+it only ever pulls low, never fighting `R8`'s pull-up. BLE only on S3 (5.0+,
+no classic BT), matching the radio the chip actually has.
+
+**`D1`/`D2`: keeping the BMC alive on ALT-only power.** `+5V_BMC`'s isolation
+(above) cuts both ways — it also means the ESP32 has *no* power at all if `J9`
+is unplugged and only `+5V_ALT` is present, which breaks the BMC's own
+functions (digipot control, ESP-Hosted, telemetry) in exactly the scenario
+`SW2`'s force-ALT override exists for. Fixed with a diode-OR scoped narrowly to
+the BMC's own regulator, not the whole `+5V_BMC` net: `D1` (anode `+5V_BMC`)
+and `D2` (anode `+5V_ALT`) both feed a new node, `U5_VIN`, which only `U5`
+(and its input cap `C14`) sit on — `U4` (the BMC-branch load switch feeding
+`+5V_SW`) still sources strictly from the real, undiluted `+5V_BMC`, so its
+behavior stays unambiguous and this doesn't create a second, redundant path to
+`+5V_SW` (`U14`/`+5V_ALT` is already the correct direct one). **Part: PMEG2010ER**
+(Nexperia, 1 A Schottky, 340 mV Vf @ 1 A, SOD-123W, LCSC **C82288**, 8,625 in
+stock, $0.28 @ 5+/$0.156 @ 6,000+, verified 2026-07-12) — low enough drop to
+stay inside the AZ1117-3.3's dropout at the WROOM-1's modest current draw;
+worth reconfirming against real load current at bring-up. This closes the
+loop with the isolation goal from earlier: the *only* remaining path for a
+`J9` session to deliver bulk power to the rest of the board is `U4`, which
+requires firmware to explicitly drive `SW5V_EN_BMC` high — confirmed via
+netlist, nothing else touches that net. (A sub-mA pull-up bias from `R8`
+reaches the interposer automatically via `HOSTED_RESET` whenever `+5V_BMC` is
+present, but that's a logic-level bias on a shared control line, the same
+category as `BOOTSEL` or any other cross-connector control signal — not power
+delivery in the sense either isolation goal is about.)
 Variants: `-1U` (C3013945, U.FL antenna for metal enclosures/range); `-N8R2` (8 MB
 flash) to shave cost; **ESP32-S3-MINI-1** if space-tight.
+
+**BMC power domain — electrically isolated by construction, not just by
+switch logic. Implemented in the schematic** (`hw/sheets/power.kicad_sch`,
+`bmc.kicad_sch`, `io.kicad_sch`). The BMC's USB-C above is a **dedicated
+connector (`J9`)**, physically separate from the carrier's main power-input
+USB-C (`J2`) — so a cable plugged in purely to reach the ESP32 (flashing,
+console, JTAG) cannot deliver power to anything else on the board; there is
+no shared VBUS conductor to design around in the first place. Three named
+5 V domains:
+- **`+5V_BMC`** — VBUS from `J9` (the BMC's own dedicated USB-C). Feeds the
+  always-on 3.3 V LDO (`U5`, via the `D1`/`D2` diode-OR below) and `U4`'s
+  input (the BMC-branch load switch, below) — nothing else. A device plugged
+  into `J9` has no electrical path to push power out to anything on `+5V_ALT`
+  or `+5V_SW`; the only way `+5V_BMC` reaches `+5V_SW` is `U4` turning on,
+  which requires firmware to explicitly drive `SW5V_EN_BMC` high (see
+  `D1`/`D2` below for the corresponding gap this left on the *receiving* side
+  — the BMC had no power at all on ALT-only input until that fix).
+- **`+5V_ALT`** — `J2` (the carrier's main power-input USB-C) plus `J5` (the
+  DC barrel jack), OR'd together by `Q1`/`Q2` with **priority given to the DC
+  jack**: `Q1` self-enables off `DCJACK_VBUS` (gate pulled to ground through
+  `R15`, so it conducts whenever the jack has voltage, independent of the
+  other source); `Q2` is gated OFF whenever the DC jack is present (its gate
+  is biased toward `DCJACK_VBUS` through the `R16`/`R17` divider, collapsing
+  its own Vgs to within a few hundred mV of zero regardless of `ALTUSB_VBUS`'s
+  own state). The jack wins deterministically whenever both are connected,
+  entirely in hardware — no firmware required for correct behavior. Known
+  simplification: this is a resistor-biased priority select, not a true
+  ideal-diode controller, so `Q2`'s "off" margin against its ~-0.9 V Vgs(th)
+  is workable but not enormous across process/temperature — acceptable for
+  this board's scope; a dedicated ideal-diode IC (e.g. LM74610-class) would
+  tighten it at the cost of one more BOM line, deliberately not added. The
+  barrel jack's built-in mechanical presence-detect contact
+  (`DCJACK_PRESENT`, pulled up by `R14`) is separately wired to ESP32 GPIO45
+  purely for firmware telemetry; it has no bearing on the OR-ing itself.
+- **`+5V_SW`** — the rail every downstream buck (and the interposer, through
+  the connector) actually runs from. Fed by a 2:1 select between `+5V_BMC`
+  and `+5V_ALT` through **two TPS22990DMLR load switches** (`U4` on the BMC
+  branch, `U14` on the ALT branch — reusing the same part already justified
+  below rather than adding a second SKU). Each `ON` pin is arbitrated between
+  its own ESP32 GPIO (through a 1 kΩ series resistor: GPIO38→`U4`, GPIO16→
+  `U14`) and a 100 kΩ pulldown that defaults it off when the GPIO is
+  undriven (reset/Hi-Z). A dedicated 3-position switch, `SW2` (separate
+  physical instance from the NOR CS-select switch `SW1`, §5, same part
+  number for BOM commonality), can override either branch on directly — a
+  genuine **ON-OFF-ON**, same structural pattern as `SW1` (pole = a fixed
+  rail, the two throws are the signals it connects to when engaged, not the
+  reverse): the pole (pin 3) is tied to `+5V_ALT` itself — through `JP1`, a
+  provisioning jumper open as shipped, see §10's digipot-safety entry — throw
+  1 connects it to `EN_SW_BMC`, throw 4 connects it to `EN_SW_ALT`. **Force BMC**
+  (throw 1, forces the BMC branch on), **off / ESP32 control** (center,
+  neither throw engaged — both branches default off via their pulldowns,
+  same safe idle state as before, and GPIOs retain full control from here),
+  **force ALT** (throw 4, forces the ALT branch on). Sourcing the pole from
+  `+5V_ALT` rather than `+3V3_ALWAYS` is deliberate: it's what makes the
+  force-ALT throw work with `J9` fully unplugged and the BMC branch
+  unpowered, which is the scenario this override exists for in the first
+  place. Trade-off, and it's a small one: the force-BMC throw is a no-op
+  unless an alt source is *also* present to supply the pole — acceptable,
+  since forcing BMC power onto `+5V_SW` is only ever wanted with firmware
+  already running (you'd be talking to the ESP32 to know to do it), not the
+  hardware-only scenario the ALT throw covers. In ESP32-auto mode (switch
+  centered), firmware gets the same effective three states via a one-hot
+  2-bit GPIO select — the two GPIOs must never both be driven high at once,
+  since neither load switch is an ideal-diode part on its output side and
+  `+5V_BMC`/`+5V_ALT` would end up fighting on the shared `+5V_SW` node.
+
+**MOSFETs (`Q1`/`Q2`): AO3401A**, 30 V/4 A P-channel, SOT-23, Vgs(th) ≈
+-0.9 V — plenty of margin driving off a 5 V rail at this current level.
+1,831,820+ listed at LCSC (AOS-branded, **C15127**) but that listing's own
+stock-status text read inconsistently when checked; the same part number
+from a second manufacturer, **UMW/Youtai Semiconductor, LCSC C347476**, gave
+a clean read — 539,740 in stock, ships now, $0.0365 @ 20+ qty (verified
+2026-07-12) — cite that listing.
 
 **Control plane** (agent-facing API over USB-CDC *and/or* WiFi REST/MQTT/telnet):
 
@@ -683,8 +852,11 @@ flash) to shave cost; **ESP32-S3-MINI-1** if space-tight.
 | **Reset** | power-cycle the **switched SoC 5 V domain** (drops *every* SoC rail — mode-A local bucks and mode-B carrier VCORE/VDDR/3.3/1.8 — for a true POR; BMC is on the always-on domain, so it survives). **Universal**: T41 QFN96 is **POR-only** (System-Control table = just POR_CTL @ pin 60, no PPRST_ → no reset pin). Optional **PPRST_** GPIO on parts that *have* one (T31 QFN88, all BGA) for a warm reset | **load-switch IC — TPS22990DMLR** (in use; see note below) on the SoC-5V domain; PPRST_ = GPIO where present |
 | **BOOTSEL** (SFC / SD / USB boot) | drive the strap at POR | ESP32 GPIO + 1 K series R |
 | **Flash sharing** (SoC ↔ ESP32) | SoC powered + **BOOTSEL-diverted → SFC is high-Z** ("Hi-Z-rst"); ESP32 owns the shared SPI bus, each master tristates when idle | **just GPIO** (CS + BOOTSEL); a ~6-ch **bus switch is optional** — only to program a fully-*off* SoC |
-| **Flash select** (DIP8 ↔ SOP8) | pick the active CS | ESP32 GPIO |
+| **Flash select** (DIP8 ↔ SOP8) | pick the active CS | ESP32 GPIO, sense-fed by a 3-position manual switch (§5) |
+| **Carrier power source** (BMC-USB ↔ ALT-OR'd supply ↔ off) | GPIO pair (one-hot 2-bit) or 3-position manual override, whichever is engaged | 2× **TPS22990DMLR** + priority P-FET OR (above) |
 | **Console** | UART1 ↔ WiFi and/or USB-CDC | ESP32 UART |
+| **WiFi/BLE for the SoC** | ESP-Hosted RPC over full-duplex SPI, SoC as host | full-duplex SPI (6 signals + `EN`-tied reset), see above |
+| **I/O expansion** (USB EN/PG/switch-sense/DC-jack-sense) | I²C-mediated, off the digipot's own bus | **TCA9555PWR** (16-bit expander, above) |
 | USB VBUS (if SoC host mode) | current-limited switch | USB power switch — **TPS2053BDR** (in use; see note below) |
 
 Added switching silicon: **one load switch + a couple of GPIOs** (bus switch only
@@ -860,11 +1032,101 @@ handful of the 260 positions, already part of the SoC signal set (§8).
 
 ## 10. Open / deferred / decided
 
-**Open:** none outstanding — the two prior items are resolved (below).
+**Open:** none outstanding — the digipot first-power-up gap below is resolved.
 
 **Deferred (decide later):** none outstanding.
 
 **Decided:**
+- **Digipot first-power-up safety gap — resolved with a mandatory bring-up
+  step plus a hardware gate, not a hope.** §2's safe-sequencing rule (BMC
+  sets the digipot, *then* enables the rail) depends on the BMC having run
+  at least once to program a safe VCORE/VDDR value into non-volatile
+  memory — and `SW2`'s force-ALT override (§9) can bring `+5V_SW` up with
+  the ESP32 completely unpowered, since `U1`'s `EN` is pulled straight to
+  `+5V_SW` with no BMC gate on the rail itself. Checked whether the
+  digipot's factory-default wiper (confirmed from Microchip's own
+  datasheet, DS22107A Table 4-2: mid-scale, `0x80` of 256, for the exact
+  `-104`/100 kΩ code used here) happens to be safe — it doesn't: on
+  `AP62600SJ-7`'s confirmed 0.6 V feedback reference, mid-scale computes to
+  **VCORE ≈ 1.2 V**, 9-50% over every T-series target (0.8-1.1 V) depending
+  on the part. Ruled out as a fix; it's the failure mode itself. A pure
+  hardware gate on "has the digipot actually been programmed" isn't
+  possible either — checking requires I²C, which requires the ESP32
+  running, which is circular (defeats the point of a firmware-independent
+  override). Resolution: **`JP1`, a 2-pin header on `SW2`'s pole**
+  (`+5V_ALT` → `JP1` → `SW2_POLE`, gating *both* throws since they share
+  the pole) **— open as shipped, so `SW2` is entirely inert until a
+  technician bridges it.** Before `JP1` is bridged, `SW2` simply does
+  nothing — the board can only be brought up through `J9`, where the BMC is
+  guaranteed to be in the loop. This is a one-time manufacturing/bring-up
+  step, not a per-use requirement: `JP1`, once bridged, stays bridged for
+  the life of the board.
+
+  **Mandatory bring-up checklist (once per board, before `JP1` is ever bridged):**
+  - [ ] Leave `JP1` unbridged/unpopulated — this is the as-shipped state;
+        don't populate it during assembly.
+  - [ ] Power the board via `J9` only (BMC's dedicated USB-C). Do **not**
+        connect `+5V_ALT` (`J2`/`J5`) or use `SW2` yet.
+  - [ ] Confirm the ESP32 has booted — console over USB-CDC or WiFi reachable.
+  - [ ] Have firmware write the correct VCORE/VDDR wiper values for the
+        specific interposer/SoC that will ship on this board into the
+        digipot's (`U3`) non-volatile memory (not just the volatile
+        register — must be the NV write so it survives power cycles).
+  - [ ] Read the digipot back over I²C and confirm the NV wiper values match
+        what was just written, not the factory mid-scale default (`0x80`).
+  - [ ] Power down, then power back up via `J9` alone again, and confirm the
+        digipot still reads the programmed (not factory-default) value —
+        proves the NV write actually persisted, not just the volatile copy.
+  - [ ] Only now, bridge `JP1` (solder a shorting link or install a shunt).
+  - [ ] Power-cycle once more and confirm `SW2`'s force-ALT/force-BMC throws
+        behave as expected before the board is considered done.
+
+  Skipping straight to bridging `JP1` on an unprogrammed board reintroduces
+  the exact overvoltage failure mode this whole mechanism exists to prevent
+  — see the calculation above.
+- **BMC gets its own dedicated USB-C (`J9`), isolated from the carrier's main
+  power input (was an unflagged gap — the BMC's native USB had been sharing
+  the main power-input connector, `J2`, so any USB-only debug session would
+  also backfeed 5 V toward the rest of the board through the shared VBUS
+  pins). Implemented in the schematic.** Split into three named 5 V domains
+  (`+5V_BMC`, `+5V_ALT`, `+5V_SW`) with a priority DC-jack-over-USB-C
+  hardware OR (`Q1`/`Q2`, no firmware needed) and a 2:1 GPIO/manual-switch
+  select (`U4`/`U14`/`SW2`) feeding the switched rail — see §9.
+- **`SW2` corrected to a genuine ON-OFF-ON** (was a real bug, not just a
+  style nit: the original wiring had the switch's pole carrying the signal
+  with one throw tied to GND, which was electrically indistinguishable from
+  center's own pulldown-default-low state whenever GPIO wasn't actively
+  fighting it — effectively on-off-off). Now pole = `+5V_ALT` (fixed rail),
+  throw 1 = `EN_SW_BMC`, throw 4 = `EN_SW_ALT` — see §9.
+- **GPIO expander added (`U15`, TCA9555PWR) and 9 slow status/enable
+  signals moved onto it**, freeing native ESP32 GPIOs for an ESP-Hosted SPI
+  link — while deliberately keeping flash chip-select and power-domain
+  switching native, for margin/timing testing. See §9.
+- **ESP-Hosted full-duplex SPI link added**, exposing the BMC's WiFi/BLE to
+  the interposer SoC as a co-processor (RPC over SPI, SoC as host) — crosses
+  `J1` on the last of unit 1's reserved pins (43-48) plus pin 86 for the
+  EN-tied reset. Confirmed ESP32-S3 has no SDIO slave peripheral (checked
+  specifically because `MSC1` looked like the obvious channel and isn't
+  usable for it), so SPI is the only viable transport on this part. See §9.
+- **`D1`/`D2` diode-OR added** so the BMC stays powered on ALT-only input
+  (was a real gap the `J9`/`+5V_BMC` isolation left behind: unplugging `J9`
+  left the ESP32 fully dead even with `+5V_ALT` present, breaking `SW2`'s
+  own force-ALT override's assumption that *something* on the BMC side might
+  need power too). Scoped to `U5`'s own input only, not the shared
+  `+5V_BMC` net `U4` depends on — see §9.
+- **`J2` (alt power USB-C) and `J3` (USB-A) share one host data pair to the
+  interposer** (`USBA_HOST_DP`/`USBA_HOST_DM`, crossing `J1` on the two
+  previously-reserved pins 41/42) — one logical USB host controller, two
+  physical connectors, for peripheral use (WiFi dongle, keyboard, hub);
+  `J2`'s VBUS stays on its own separate net and plays no part in this. Was
+  ambiguous until confirmed: `J3`'s data-line labels had been present on the
+  schematic since the earlier I/O rebuild but never actually routed across
+  the connector — a loose end now closed.
+- **Carrier NOR confirmed dual, matching the reference single-board Teacup's
+  U4 (soldered SOIC-8) / U5 (DIP-8 socket) precedent exactly** — the CS-select
+  silicon (§9's TS5A3166 switches + manual override switch) was already
+  designed for two chips, but the soldered primary flash chip itself had been
+  left off the schematic; added (**W25Q32JVSS**), see §5.
 - **Multi-sensor is family-wide; cameras live on the carrier and fit in 260 (was
   deferred).** Datasheet-verified MIPI-RX D-PHY per SoC:
   - **T32** — 4 data + **2 clock** lanes (CLKP0+CLKP1) = **dual 2-lane** (or one

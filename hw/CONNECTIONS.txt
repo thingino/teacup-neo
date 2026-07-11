@@ -9,759 +9,923 @@ is what every pin SHOULD end up wired to, regardless of how it currently renders
 
 C1  (22uF)
       footprint: Capacitor_SMD:C_0805_2012Metric
-      pin    1                        -> +5V_SW
-      pin    2                        -> GND
+      pin    1                       -> +5V_SW
+      pin    2                       -> GND
 
 C2  (100nF)
       footprint: Capacitor_SMD:C_0402_1005Metric
-      pin    1                        -> +5V_SW
-      pin    2                        -> GND
+      pin    1                       -> +5V_SW
+      pin    2                       -> GND
 
 C3  (100nF)
       footprint: Capacitor_SMD:C_0402_1005Metric
-      pin    1                        -> Net-(U1-BST)
-      pin    2                        -> Net-(U1-SW)
+      pin    1                       -> U1_BST
+      pin    2                       -> U1_SW
 
 C4  (1uF)
       footprint: Capacitor_SMD:C_0402_1005Metric
-      pin    1                        -> Net-(U1-VCC)
-      pin    2                        -> GND
+      pin    1                       -> U1_VCC
+      pin    2                       -> GND
 
 C5  (4.7nF)
       footprint: Capacitor_SMD:C_0402_1005Metric
-      pin    1                        -> Net-(U1-SS/TR)
-      pin    2                        -> GND
+      pin    1                       -> U1_SS
+      pin    2                       -> GND
 
 C6  (10uF)
       footprint: Capacitor_SMD:C_0805_2012Metric
-      pin    1                        -> +5V_SW
-      pin    2                        -> GND
+      pin    1                       -> +5V_SW
+      pin    2                       -> GND
 
 C7  (100nF)
       footprint: Capacitor_SMD:C_0402_1005Metric
-      pin    1                        -> Net-(U2-BST)
-      pin    2                        -> Net-(U2-SW)
+      pin    1                       -> U2_BST
+      pin    2                       -> U2_SW
 
 C9  (22uF)
       footprint: Capacitor_SMD:C_0805_2012Metric
-      pin    1                        -> VCORE
-      pin    2                        -> GND
+      pin    1                       -> VCORE
+      pin    2                       -> GND
 
 C10  (22uF)
       footprint: Capacitor_SMD:C_0805_2012Metric
-      pin    1                        -> VCORE
-      pin    2                        -> GND
+      pin    1                       -> VCORE
+      pin    2                       -> GND
 
 C11  (22uF)
       footprint: Capacitor_SMD:C_0805_2012Metric
-      pin    1                        -> VDDR
-      pin    2                        -> GND
+      pin    1                       -> VDDR
+      pin    2                       -> GND
 
 C12  (100nF)
       footprint: Capacitor_SMD:C_0402_1005Metric
-      pin    1                        -> +3V3
-      pin    2                        -> GND
+      pin    1                       -> +3V3
+      pin    2                       -> GND
 
 C13  (1nF_TBD)
       footprint: Capacitor_SMD:C_0402_1005Metric
-      pin    1                        -> Net-(U4-CT)
-      pin    2                        -> GND
+      pin    1                       -> U4_CT
+      pin    2                       -> GND
 
 C14  (1uF)
       footprint: Capacitor_SMD:C_0603_1608Metric
-      pin    1                        -> +5V_IN
-      pin    2                        -> GND
+      pin    1                       -> U5_VIN
+      pin    2                       -> GND
 
 C15  (10uF)
       footprint: Capacitor_SMD:C_0805_2012Metric
-      pin    1                        -> +3V3_ALWAYS
-      pin    2                        -> GND
+      pin    1                       -> +3V3_ALWAYS
+      pin    2                       -> GND
 
 C16  (10uF)
       footprint: Capacitor_SMD:C_0805_2012Metric
-      pin    1                        -> +5V_SW
-      pin    2                        -> GND
+      pin    1                       -> +5V_SW
+      pin    2                       -> GND
 
 C17  (100nF)
       footprint: Capacitor_SMD:C_0402_1005Metric
-      pin    1                        -> Net-(U7-BST)
-      pin    2                        -> Net-(U7-SW)
+      pin    1                       -> U7_BST
+      pin    2                       -> U7_SW
 
 C18  (22uF)
       footprint: Capacitor_SMD:C_0805_2012Metric
-      pin    1                        -> +3V3
-      pin    2                        -> GND
+      pin    1                       -> +3V3
+      pin    2                       -> GND
 
 C19  (1uF)
       footprint: Capacitor_SMD:C_0603_1608Metric
-      pin    1                        -> +3V3
-      pin    2                        -> GND
+      pin    1                       -> +3V3
+      pin    2                       -> GND
 
 C20  (10uF)
       footprint: Capacitor_SMD:C_0805_2012Metric
-      pin    1                        -> +1V8
-      pin    2                        -> GND
+      pin    1                       -> +1V8
+      pin    2                       -> GND
+
+C23  (1nF_TBD)
+      footprint: Capacitor_SMD:C_0402_1005Metric
+      pin    1                       -> U14_CT
+      pin    2                       -> GND
+
+D1  (PMEG2010ER)
+      footprint: Diode_SMD:D_SOD-123W
+      pin    1  K                    -> U5_VIN
+      pin    2  A                    -> +5V_BMC
+
+D2  (PMEG2010ER)
+      footprint: Diode_SMD:D_SOD-123W
+      pin    1  K                    -> U5_VIN
+      pin    2  A                    -> +5V_ALT
 
 L1  (2.2uH)
       footprint: Inductor_SMD:L_1210_3225Metric
-      pin    1  1                     -> Net-(U1-SW)
-      pin    2  2                     -> VCORE
+      pin    1                       -> U1_SW
+      pin    2                       -> VCORE
 
 L2  (2.2uH)
       footprint: Inductor_SMD:L_1210_3225Metric
-      pin    1  1                     -> Net-(U2-SW)
-      pin    2  2                     -> VDDR
+      pin    1                       -> U2_SW
+      pin    2                       -> VDDR
 
 L3  (2.2uH)
       footprint: Inductor_SMD:L_1210_3225Metric
-      pin    1  1                     -> Net-(U7-SW)
-      pin    2  2                     -> +3V3
+      pin    1                       -> U7_SW
+      pin    2                       -> +3V3
 
 R1  (100k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> +5V_SW
-      pin    2                        -> Net-(U1-EN)
+      pin    1                       -> +5V_SW
+      pin    2                       -> U1_EN
 
 R2  (10k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> +3V3
-      pin    2                        -> PG_VCORE
+      pin    1                       -> +3V3
+      pin    2                       -> PG_VCORE
 
 R3  (100k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> +3V3
-      pin    2                        -> Net-(U2-EN)
+      pin    1                       -> +3V3
+      pin    2                       -> U2_EN
 
 R4  (10k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> +3V3
-      pin    2                        -> PG_SW5V
+      pin    1                       -> +3V3
+      pin    2                       -> PG_SW5V
 
 R5  (100k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> +3V3
-      pin    2                        -> Net-(U7-EN)
+      pin    1                       -> +3V3
+      pin    2                       -> U7_EN
 
 R6  (31.6k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> +3V3
-      pin    2                        -> Net-(U7-FB)
+      pin    1                       -> +3V3
+      pin    2                       -> P3V3_FB
 
 R7  (10k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> Net-(U7-FB)
-      pin    2                        -> GND
+      pin    1                       -> P3V3_FB
+      pin    2                       -> GND
+
+R20  (100k)
+      footprint: Resistor_SMD:R_0402_1005Metric
+      pin    1                       -> EN_SW_BMC
+      pin    2                       -> GND
+
+R21  (1k)
+      footprint: Resistor_SMD:R_0402_1005Metric
+      pin    1                       -> SW5V_EN_BMC
+      pin    2                       -> EN_SW_BMC
+
+R22  (100k)
+      footprint: Resistor_SMD:R_0402_1005Metric
+      pin    1                       -> EN_SW_ALT
+      pin    2                       -> GND
+
+R23  (1k)
+      footprint: Resistor_SMD:R_0402_1005Metric
+      pin    1                       -> SW5V_EN_ALT
+      pin    2                       -> EN_SW_ALT
+
+R24  (10k)
+      footprint: Resistor_SMD:R_0402_1005Metric
+      pin    1                       -> +3V3
+      pin    2                       -> PG_SW5V_ALT
 
 U1  (AP62600SJ-7)
       footprint: teacup-carrier:QFN-12_L3.0-W2.0-P0.50-TL_AP62600SJ-7
-      pin    1  PGND                  -> GND
-      pin    2  VIN                   -> +5V_SW
-      pin    3  EN                    -> Net-(U1-EN)
-      pin    4  MODE                  -> GND
-      pin    5  FSEL                  -> GND
-      pin    6  PG                    -> PG_VCORE
-      pin    7  BST                   -> Net-(U1-BST)
-      pin    8  SW                    -> Net-(U1-SW)
-      pin    9  VCC                   -> Net-(U1-VCC)
-      pin   10  SS/TR                 -> Net-(U1-SS/TR)
-      pin   11  GND                   -> GND
-      pin   12  FB                    -> VCORE_FB
+      pin    1  PGND                 -> GND
+      pin    2  VIN                  -> +5V_SW
+      pin    3  EN                   -> U1_EN
+      pin    4  MODE                 -> GND
+      pin    5  FSEL                 -> GND
+      pin    6  PG                   -> PG_VCORE
+      pin    7  BST                  -> U1_BST
+      pin    8  SW                   -> U1_SW
+      pin    9  VCC                  -> U1_VCC
+      pin   10  SS/TR                -> U1_SS
+      pin   11  GND                  -> GND
+      pin   12  FB                   -> VCORE_FB
 
 U2  (AP62300WU-7)
       footprint: teacup-carrier:TSOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL
-      pin    1  GND                   -> GND
-      pin    2  SW                    -> Net-(U2-SW)
-      pin    3  VIN                   -> +5V_SW
-      pin    4  FB                    -> VDDR_FB
-      pin    5  EN                    -> Net-(U2-EN)
-      pin    6  BST                   -> Net-(U2-BST)
+      pin    1  GND                  -> GND
+      pin    2  SW                   -> U2_SW
+      pin    3  VIN                  -> +5V_SW
+      pin    4  FB                   -> VDDR_FB
+      pin    5  EN                   -> U2_EN
+      pin    6  BST                  -> U2_BST
 
 U3  (MCP4661-104E_ST)
       footprint: Package_SO:TSSOP-14_4.4x5mm_P0.65mm
-      pin    1  HVC/A0                -> GND
-      pin    2  SCL                   -> I2C_PWR_SCL
-      pin    3  SDA                   -> I2C_PWR_SDA
-      pin    4  VSS                   -> GND
-      pin    5  P1B                   -> GND
-      pin    6  P1W                   -> VDDR_FB
-      pin    7  P1A                   -> VDDR
-      pin    8  P0A                   -> VCORE
-      pin    9  P0W                   -> VCORE_FB
-      pin   10  P0B                   -> GND
-      pin   11  WP                    -> +3V3
-      pin   12  A2                    -> GND
-      pin   13  A1                    -> GND
-      pin   14  VDD                   -> +3V3
+      pin    1  HVC/A0               -> GND
+      pin    2  SCL                  -> I2C_PWR_SCL
+      pin    3  SDA                  -> I2C_PWR_SDA
+      pin    4  VSS                  -> GND
+      pin    5  P1B                  -> GND
+      pin    6  P1W                  -> VDDR_FB
+      pin    7  P1A                  -> VDDR
+      pin    8  P0A                  -> VCORE
+      pin    9  P0W                  -> VCORE_FB
+      pin   10  P0B                  -> GND
+      pin   11  WP                   -> +3V3
+      pin   12  A2                   -> GND
+      pin   13  A1                   -> GND
+      pin   14  VDD                  -> +3V3
 
 U4  (TPS22990DMLR)
       footprint: teacup-carrier:WSON-10_L3.0-W2.0-P0.50-BL-EP_TI_DML
-      pin    1  CT                    -> Net-(U4-CT)
-      pin    2  NC                    -> (not connected)
-      pin    3  VIN                   -> +5V_IN
-      pin    4  VBIAS                 -> +5V_IN
-      pin    5  ON                    -> SW5V_EN
-      pin    6  GND                   -> GND
-      pin    7  PG                    -> PG_SW5V
-      pin    8  VOUT                  -> +5V_SW
-      pin    9  VOUT                  -> +5V_SW
-      pin   10  VOUT                  -> +5V_SW
-      pin   11  VIN                   -> +5V_IN
+      pin    1  CT                   -> U4_CT
+      pin    2  NC                   -> (not connected)
+      pin    3  VIN                  -> +5V_BMC
+      pin    4  VBIAS                -> +5V_BMC
+      pin    5  ON                   -> EN_SW_BMC
+      pin    6  GND                  -> GND
+      pin    7  PG                   -> PG_SW5V
+      pin    8  VOUT                 -> +5V_SW
+      pin    9  VOUT                 -> +5V_SW
+      pin   10  VOUT                 -> +5V_SW
+      pin   11  VIN                  -> +5V_BMC
 
 U5  (AZ1117CH-3.3TRG1)
       footprint: Package_TO_SOT_SMD:SOT-223-3_TabPin2
-      pin    1  IN                    -> +5V_IN
-      pin    2  GND                   -> GND
-      pin    3  OUT                   -> +3V3_ALWAYS
+      pin    1  IN                   -> U5_VIN
+      pin    2  GND                  -> GND
+      pin    3  OUT                  -> +3V3_ALWAYS
 
 U6  (AZ1117CH-1.8TRG1)
       footprint: Package_TO_SOT_SMD:SOT-223-3_TabPin2
-      pin    1  IN                    -> +3V3
-      pin    2  GND                   -> GND
-      pin    3  OUT                   -> +1V8
+      pin    1  IN                   -> +3V3
+      pin    2  GND                  -> GND
+      pin    3  OUT                  -> +1V8
 
 U7  (AP62300WU-7)
       footprint: teacup-carrier:TSOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL
-      pin    1  GND                   -> GND
-      pin    2  SW                    -> Net-(U7-SW)
-      pin    3  VIN                   -> +5V_SW
-      pin    4  FB                    -> Net-(U7-FB)
-      pin    5  EN                    -> Net-(U7-EN)
-      pin    6  BST                   -> Net-(U7-BST)
+      pin    1  GND                  -> GND
+      pin    2  SW                   -> U7_SW
+      pin    3  VIN                  -> +5V_SW
+      pin    4  FB                   -> P3V3_FB
+      pin    5  EN                   -> U7_EN
+      pin    6  BST                  -> U7_BST
+
+U14  (TPS22990DMLR)
+      footprint: teacup-carrier:WSON-10_L3.0-W2.0-P0.50-BL-EP_TI_DML
+      pin    1  CT                   -> U14_CT
+      pin    2  NC                   -> (not connected)
+      pin    3  VIN                  -> +5V_ALT
+      pin    4  VBIAS                -> +5V_ALT
+      pin    5  ON                   -> EN_SW_ALT
+      pin    6  GND                  -> GND
+      pin    7  PG                   -> PG_SW5V_ALT
+      pin    8  VOUT                 -> +5V_SW
+      pin    9  VOUT                 -> +5V_SW
+      pin   10  VOUT                 -> +5V_SW
+      pin   11  VIN                  -> +5V_ALT
 
 ### DDR4 UDIMM-288 CONNECTOR
 --------------------------------------------------------------------------------
 
 J1  (AH58893-T9B10-3F)
       footprint: teacup-carrier:DDR4288S0511H_UDIMM288
-      pin    1  P1                    -> VCORE
-      pin    2  P2                    -> VCORE
-      pin    3  P3                    -> VCORE
-      pin    4  P4                    -> VCORE
-      pin    5  P5                    -> GND
-      pin    6  P6                    -> GND
-      pin    7  P7                    -> GND
-      pin    8  P8                    -> GND
-      pin    9  P9                    -> VDDR
-      pin   10  P10                   -> VDDR
-      pin   11  P11                   -> GND
-      pin   12  P12                   -> GND
-      pin   13  P13                   -> +3V3
-      pin   14  P14                   -> +3V3
-      pin   15  P15                   -> +1V8
-      pin   16  P16                   -> +1V8
-      pin   17  P17                   -> +5V_MODEA
-      pin   18  P18                   -> +5V_MODEA
-      pin   19  P19                   -> GND
-      pin   20  P20                   -> GND
-      pin   21  P21                   -> GND
-      pin   22  P22                   -> GND
-      pin   23  P23                   -> I2C_ID_SDA
-      pin   24  P24                   -> I2C_ID_SCL
-      pin   25  P25                   -> VCORE_SNS
-      pin   26  P26                   -> BOOTSEL
-      pin   27  P27                   -> RESET_EN
-      pin   28  P28                   -> SFC_CS
-      pin   29  P29                   -> SFC_CLK
-      pin   30  P30                   -> SFC_IO0
-      pin   31  P31                   -> SFC_IO1
-      pin   32  P32                   -> SFC_IO2
-      pin   33  P33                   -> SFC_IO3
-      pin   34  P34                   -> UART1_TX
-      pin   35  P35                   -> UART1_RX
-      pin   36  P36                   -> GND
-      pin   37  P37                   -> GND
-      pin   38  P38                   -> GND
-      pin   39  P39                   -> GND
-      pin   40  P40                   -> GND
-      pin   41  P41                   -> RESERVED_P41
-      pin   42  P42                   -> RESERVED_P42
-      pin   43  P43                   -> RESERVED_P43
-      pin   44  P44                   -> RESERVED_P44
-      pin   45  P45                   -> RESERVED_P45
-      pin   46  P46                   -> RESERVED_P46
-      pin   47  P47                   -> RESERVED_P47
-      pin   48  P48                   -> RESERVED_P48
-      pin   49  P49                   -> (not connected)
-      pin   50  P50                   -> (not connected)
-      pin   51  P51                   -> (not connected)
-      pin   52  P52                   -> (not connected)
-      pin   53  P53                   -> (not connected)
-      pin   54  P54                   -> (not connected)
-      pin   55  P55                   -> (not connected)
-      pin   56  P56                   -> (not connected)
-      pin   57  P57                   -> (not connected)
-      pin   58  P58                   -> (not connected)
-      pin   59  P59                   -> (not connected)
-      pin   60  P60                   -> (not connected)
-      pin   61  P61                   -> (not connected)
-      pin   62  P62                   -> (not connected)
-      pin   63  P63                   -> (not connected)
-      pin   64  P64                   -> (not connected)
-      pin   65  P65                   -> (not connected)
-      pin   66  P66                   -> (not connected)
-      pin   67  P67                   -> (not connected)
-      pin   68  P68                   -> (not connected)
-      pin   69  P69                   -> (not connected)
-      pin   70  P70                   -> (not connected)
-      pin   71  P71                   -> (not connected)
-      pin   72  P72                   -> (not connected)
-      pin   73  P73                   -> (not connected)
-      pin   74  P74                   -> (not connected)
-      pin   75  P75                   -> (not connected)
-      pin   76  P76                   -> (not connected)
-      pin   77  P77                   -> (not connected)
-      pin   78  P78                   -> (not connected)
-      pin   79  P79                   -> (not connected)
-      pin   80  P80                   -> (not connected)
-      pin   81  P81                   -> (not connected)
-      pin   82  P82                   -> (not connected)
-      pin   83  P83                   -> (not connected)
-      pin   84  P84                   -> (not connected)
-      pin   85  P85                   -> (not connected)
-      pin   86  P86                   -> (not connected)
-      pin   87  P87                   -> (not connected)
-      pin   88  P88                   -> (not connected)
-      pin   89  P89                   -> (not connected)
-      pin   90  P90                   -> (not connected)
-      pin   91  P91                   -> (not connected)
-      pin   92  P92                   -> (not connected)
-      pin   93  P93                   -> (not connected)
-      pin   94  P94                   -> (not connected)
-      pin   95  P95                   -> (not connected)
-      pin   96  P96                   -> (not connected)
-      pin   97  P97                   -> (not connected)
-      pin   98  P98                   -> (not connected)
-      pin   99  P99                   -> (not connected)
-      pin  100  P100                  -> (not connected)
-      pin  101  P101                  -> (not connected)
-      pin  102  P102                  -> (not connected)
-      pin  103  P103                  -> (not connected)
-      pin  104  P104                  -> (not connected)
-      pin  105  P105                  -> (not connected)
-      pin  106  P106                  -> (not connected)
-      pin  107  P107                  -> (not connected)
-      pin  108  P108                  -> (not connected)
-      pin  109  P109                  -> (not connected)
-      pin  110  P110                  -> (not connected)
-      pin  111  P111                  -> (not connected)
-      pin  112  P112                  -> (not connected)
-      pin  113  P113                  -> (not connected)
-      pin  114  P114                  -> (not connected)
-      pin  115  P115                  -> (not connected)
-      pin  116  P116                  -> (not connected)
-      pin  117  P117                  -> (not connected)
-      pin  118  P118                  -> (not connected)
-      pin  119  P119                  -> (not connected)
-      pin  120  P120                  -> (not connected)
-      pin  121  P121                  -> (not connected)
-      pin  122  P122                  -> (not connected)
-      pin  123  P123                  -> (not connected)
-      pin  124  P124                  -> (not connected)
-      pin  125  P125                  -> (not connected)
-      pin  126  P126                  -> (not connected)
-      pin  127  P127                  -> (not connected)
-      pin  128  P128                  -> (not connected)
-      pin  129  P129                  -> (not connected)
-      pin  130  P130                  -> (not connected)
-      pin  131  P131                  -> (not connected)
-      pin  132  P132                  -> (not connected)
-      pin  133  P133                  -> (not connected)
-      pin  134  P134                  -> (not connected)
-      pin  135  P135                  -> (not connected)
-      pin  136  P136                  -> (not connected)
-      pin  137  P137                  -> (not connected)
-      pin  138  P138                  -> (not connected)
-      pin  139  P139                  -> (not connected)
-      pin  140  P140                  -> (not connected)
-      pin  141  P141                  -> (not connected)
-      pin  142  P142                  -> (not connected)
-      pin  143  P143                  -> (not connected)
-      pin  144  P144                  -> (not connected)
-      pin  145  P145                  -> (not connected)
-      pin  146  P146                  -> (not connected)
-      pin  147  P147                  -> (not connected)
-      pin  148  P148                  -> (not connected)
-      pin  149  P149                  -> (not connected)
-      pin  150  P150                  -> (not connected)
-      pin  151  P151                  -> (not connected)
-      pin  152  P152                  -> (not connected)
-      pin  153  P153                  -> (not connected)
-      pin  154  P154                  -> (not connected)
-      pin  155  P155                  -> (not connected)
-      pin  156  P156                  -> (not connected)
-      pin  157  P157                  -> (not connected)
-      pin  158  P158                  -> (not connected)
-      pin  159  P159                  -> (not connected)
-      pin  160  P160                  -> (not connected)
-      pin  161  P161                  -> (not connected)
-      pin  162  P162                  -> (not connected)
-      pin  163  P163                  -> (not connected)
-      pin  164  P164                  -> (not connected)
-      pin  165  P165                  -> (not connected)
-      pin  166  P166                  -> (not connected)
-      pin  167  P167                  -> (not connected)
-      pin  168  P168                  -> (not connected)
-      pin  169  P169                  -> (not connected)
-      pin  170  P170                  -> (not connected)
-      pin  171  P171                  -> (not connected)
-      pin  172  P172                  -> (not connected)
-      pin  173  P173                  -> (not connected)
-      pin  174  P174                  -> (not connected)
-      pin  175  P175                  -> (not connected)
-      pin  176  P176                  -> (not connected)
-      pin  177  P177                  -> (not connected)
-      pin  178  P178                  -> (not connected)
-      pin  179  P179                  -> (not connected)
-      pin  180  P180                  -> (not connected)
-      pin  181  P181                  -> (not connected)
-      pin  182  P182                  -> (not connected)
-      pin  183  P183                  -> (not connected)
-      pin  184  P184                  -> (not connected)
-      pin  185  P185                  -> (not connected)
-      pin  186  P186                  -> (not connected)
-      pin  187  P187                  -> (not connected)
-      pin  188  P188                  -> (not connected)
-      pin  189  P189                  -> (not connected)
-      pin  190  P190                  -> (not connected)
-      pin  191  P191                  -> (not connected)
-      pin  192  P192                  -> (not connected)
-      pin  193  P193                  -> (not connected)
-      pin  194  P194                  -> (not connected)
-      pin  195  P195                  -> (not connected)
-      pin  196  P196                  -> (not connected)
-      pin  197  P197                  -> (not connected)
-      pin  198  P198                  -> (not connected)
-      pin  199  P199                  -> (not connected)
-      pin  200  P200                  -> (not connected)
-      pin  201  P201                  -> (not connected)
-      pin  202  P202                  -> (not connected)
-      pin  203  P203                  -> (not connected)
-      pin  204  P204                  -> (not connected)
-      pin  205  P205                  -> (not connected)
-      pin  206  P206                  -> (not connected)
-      pin  207  P207                  -> (not connected)
-      pin  208  P208                  -> (not connected)
-      pin  209  P209                  -> (not connected)
-      pin  210  P210                  -> (not connected)
-      pin  211  P211                  -> (not connected)
-      pin  212  P212                  -> (not connected)
-      pin  213  P213                  -> (not connected)
-      pin  214  P214                  -> (not connected)
-      pin  215  P215                  -> (not connected)
-      pin  216  P216                  -> (not connected)
-      pin  217  P217                  -> (not connected)
-      pin  218  P218                  -> (not connected)
-      pin  219  P219                  -> (not connected)
-      pin  220  P220                  -> (not connected)
-      pin  221  P221                  -> (not connected)
-      pin  222  P222                  -> (not connected)
-      pin  223  P223                  -> (not connected)
-      pin  224  P224                  -> (not connected)
-      pin  225  P225                  -> (not connected)
-      pin  226  P226                  -> (not connected)
-      pin  227  P227                  -> (not connected)
-      pin  228  P228                  -> (not connected)
-      pin  229  P229                  -> (not connected)
-      pin  230  P230                  -> (not connected)
-      pin  231  P231                  -> (not connected)
-      pin  232  P232                  -> (not connected)
-      pin  233  P233                  -> (not connected)
-      pin  234  P234                  -> (not connected)
-      pin  235  P235                  -> (not connected)
-      pin  236  P236                  -> (not connected)
-      pin  237  P237                  -> (not connected)
-      pin  238  P238                  -> (not connected)
-      pin  239  P239                  -> (not connected)
-      pin  240  P240                  -> (not connected)
-      pin  241  P241                  -> (not connected)
-      pin  242  P242                  -> (not connected)
-      pin  243  P243                  -> (not connected)
-      pin  244  P244                  -> (not connected)
-      pin  245  P245                  -> (not connected)
-      pin  246  P246                  -> (not connected)
-      pin  247  P247                  -> (not connected)
-      pin  248  P248                  -> (not connected)
-      pin  249  P249                  -> (not connected)
-      pin  250  P250                  -> (not connected)
-      pin  251  P251                  -> (not connected)
-      pin  252  P252                  -> (not connected)
-      pin  253  P253                  -> (not connected)
-      pin  254  P254                  -> (not connected)
-      pin  255  P255                  -> (not connected)
-      pin  256  P256                  -> (not connected)
-      pin  257  P257                  -> (not connected)
-      pin  258  P258                  -> (not connected)
-      pin  259  P259                  -> (not connected)
-      pin  260  P260                  -> (not connected)
-      pin  261  P261                  -> (not connected)
-      pin  262  P262                  -> (not connected)
-      pin  263  P263                  -> (not connected)
-      pin  264  P264                  -> (not connected)
-      pin  265  P265                  -> (not connected)
-      pin  266  P266                  -> (not connected)
-      pin  267  P267                  -> (not connected)
-      pin  268  P268                  -> (not connected)
-      pin  269  P269                  -> (not connected)
-      pin  270  P270                  -> (not connected)
-      pin  271  P271                  -> (not connected)
-      pin  272  P272                  -> (not connected)
-      pin  273  P273                  -> (not connected)
-      pin  274  P274                  -> (not connected)
-      pin  275  P275                  -> (not connected)
-      pin  276  P276                  -> (not connected)
-      pin  277  P277                  -> (not connected)
-      pin  278  P278                  -> (not connected)
-      pin  279  P279                  -> (not connected)
-      pin  280  P280                  -> (not connected)
-      pin  281  P281                  -> (not connected)
-      pin  282  P282                  -> (not connected)
-      pin  283  P283                  -> (not connected)
-      pin  284  P284                  -> (not connected)
-      pin  285  P285                  -> (not connected)
-      pin  286  P286                  -> (not connected)
-      pin  287  P287                  -> (not connected)
-      pin  288  P288                  -> (not connected)
+      pin    1  P1                   -> VCORE
+      pin    2  P2                   -> VCORE
+      pin    3  P3                   -> VCORE
+      pin    4  P4                   -> VCORE
+      pin    5  P5                   -> GND
+      pin    6  P6                   -> GND
+      pin    7  P7                   -> GND
+      pin    8  P8                   -> GND
+      pin    9  P9                   -> VDDR
+      pin   10  P10                  -> VDDR
+      pin   11  P11                  -> GND
+      pin   12  P12                  -> GND
+      pin   13  P13                  -> +3V3
+      pin   14  P14                  -> +3V3
+      pin   15  P15                  -> +1V8
+      pin   16  P16                  -> +1V8
+      pin   17  P17                  -> +5V_MODEA
+      pin   18  P18                  -> +5V_MODEA
+      pin   19  P19                  -> GND
+      pin   20  P20                  -> GND
+      pin   21  P21                  -> GND
+      pin   22  P22                  -> GND
+      pin   23  P23                  -> I2C_ID_SDA
+      pin   24  P24                  -> I2C_ID_SCL
+      pin   25  P25                  -> VCORE_SNS
+      pin   26  P26                  -> BOOTSEL
+      pin   27  P27                  -> RESET_EN
+      pin   28  P28                  -> SFC_CS
+      pin   29  P29                  -> SFC_CLK
+      pin   30  P30                  -> SFC_IO0
+      pin   31  P31                  -> SFC_IO1
+      pin   32  P32                  -> SFC_IO2
+      pin   33  P33                  -> SFC_IO3
+      pin   34  P34                  -> UART1_TX
+      pin   35  P35                  -> UART1_RX
+      pin   36  P36                  -> GND
+      pin   37  P37                  -> GND
+      pin   38  P38                  -> GND
+      pin   39  P39                  -> GND
+      pin   40  P40                  -> GND
+      pin   41  P41                  -> USBA_HOST_DP
+      pin   42  P42                  -> USBA_HOST_DM
+      pin   43  P43                  -> HOSTED_SPI_CLK
+      pin   44  P44                  -> HOSTED_SPI_MOSI
+      pin   45  P45                  -> HOSTED_SPI_MISO
+      pin   46  P46                  -> HOSTED_SPI_CS
+      pin   47  P47                  -> HOSTED_HANDSHAKE
+      pin   48  P48                  -> HOSTED_DATA_READY
+      pin   49  P49                  -> GND
+      pin   50  P50                  -> MSC0_CLK
+      pin   51  P51                  -> GND
+      pin   52  P52                  -> MSC0_CMD
+      pin   53  P53                  -> MSC0_D0
+      pin   54  P54                  -> MSC0_D1
+      pin   55  P55                  -> MSC0_D2
+      pin   56  P56                  -> MSC0_D3_CD
+      pin   57  P57                  -> GND
+      pin   58  P58                  -> HPOUTL
+      pin   59  P59                  -> GND
+      pin   60  P60                  -> MIPI0_GPIO
+      pin   61  P61                  -> MIPI0_SCCB_SDA
+      pin   62  P62                  -> MIPI0_SCCB_SCL
+      pin   63  P63                  -> GND
+      pin   64  P64                  -> MIPI0_D0N
+      pin   65  P65                  -> MIPI0_D0P
+      pin   66  P66                  -> GND
+      pin   67  P67                  -> MIPI0_D1N
+      pin   68  P68                  -> MIPI0_D1P
+      pin   69  P69                  -> GND
+      pin   70  P70                  -> MIPI0_CLKN
+      pin   71  P71                  -> MIPI0_CLKP
+      pin   72  P72                  -> GND
+      pin   73  P73                  -> MIPI1_GPIO
+      pin   74  P74                  -> MIPI1_SCCB_SDA
+      pin   75  P75                  -> MIPI1_SCCB_SCL
+      pin   76  P76                  -> GND
+      pin   77  P77                  -> MIPI1_D0N
+      pin   78  P78                  -> MIPI1_D0P
+      pin   79  P79                  -> GND
+      pin   80  P80                  -> MIPI1_D1N
+      pin   81  P81                  -> MIPI1_D1P
+      pin   82  P82                  -> GND
+      pin   83  P83                  -> MIPI1_CLKN
+      pin   84  P84                  -> MIPI1_CLKP
+      pin   85  P85                  -> GND
+      pin   86  P86                  -> HOSTED_RESET
+      pin   87  P87                  -> RESERVED_P87
+      pin   88  P88                  -> RESERVED_P88
+      pin   89  P89                  -> RESERVED_P89
+      pin   90  P90                  -> RESERVED_P90
+      pin   91  P91                  -> RESERVED_P91
+      pin   92  P92                  -> RESERVED_P92
+      pin   93  P93                  -> RESERVED_P93
+      pin   94  P94                  -> RESERVED_P94
+      pin   95  P95                  -> RESERVED_P95
+      pin   96  P96                  -> RESERVED_P96
+      pin   97  P97                  -> (not connected)
+      pin   98  P98                  -> (not connected)
+      pin   99  P99                  -> (not connected)
+      pin  100  P100                 -> (not connected)
+      pin  101  P101                 -> (not connected)
+      pin  102  P102                 -> (not connected)
+      pin  103  P103                 -> (not connected)
+      pin  104  P104                 -> (not connected)
+      pin  105  P105                 -> (not connected)
+      pin  106  P106                 -> (not connected)
+      pin  107  P107                 -> (not connected)
+      pin  108  P108                 -> (not connected)
+      pin  109  P109                 -> (not connected)
+      pin  110  P110                 -> (not connected)
+      pin  111  P111                 -> (not connected)
+      pin  112  P112                 -> (not connected)
+      pin  113  P113                 -> (not connected)
+      pin  114  P114                 -> (not connected)
+      pin  115  P115                 -> (not connected)
+      pin  116  P116                 -> (not connected)
+      pin  117  P117                 -> (not connected)
+      pin  118  P118                 -> (not connected)
+      pin  119  P119                 -> (not connected)
+      pin  120  P120                 -> (not connected)
+      pin  121  P121                 -> (not connected)
+      pin  122  P122                 -> (not connected)
+      pin  123  P123                 -> (not connected)
+      pin  124  P124                 -> (not connected)
+      pin  125  P125                 -> (not connected)
+      pin  126  P126                 -> (not connected)
+      pin  127  P127                 -> (not connected)
+      pin  128  P128                 -> (not connected)
+      pin  129  P129                 -> (not connected)
+      pin  130  P130                 -> (not connected)
+      pin  131  P131                 -> (not connected)
+      pin  132  P132                 -> (not connected)
+      pin  133  P133                 -> (not connected)
+      pin  134  P134                 -> (not connected)
+      pin  135  P135                 -> (not connected)
+      pin  136  P136                 -> (not connected)
+      pin  137  P137                 -> (not connected)
+      pin  138  P138                 -> (not connected)
+      pin  139  P139                 -> (not connected)
+      pin  140  P140                 -> (not connected)
+      pin  141  P141                 -> (not connected)
+      pin  142  P142                 -> (not connected)
+      pin  143  P143                 -> (not connected)
+      pin  144  P144                 -> (not connected)
+      pin  145  P145                 -> (not connected)
+      pin  146  P146                 -> (not connected)
+      pin  147  P147                 -> (not connected)
+      pin  148  P148                 -> (not connected)
+      pin  149  P149                 -> (not connected)
+      pin  150  P150                 -> (not connected)
+      pin  151  P151                 -> (not connected)
+      pin  152  P152                 -> (not connected)
+      pin  153  P153                 -> (not connected)
+      pin  154  P154                 -> (not connected)
+      pin  155  P155                 -> (not connected)
+      pin  156  P156                 -> (not connected)
+      pin  157  P157                 -> (not connected)
+      pin  158  P158                 -> (not connected)
+      pin  159  P159                 -> (not connected)
+      pin  160  P160                 -> (not connected)
+      pin  161  P161                 -> (not connected)
+      pin  162  P162                 -> (not connected)
+      pin  163  P163                 -> (not connected)
+      pin  164  P164                 -> (not connected)
+      pin  165  P165                 -> (not connected)
+      pin  166  P166                 -> (not connected)
+      pin  167  P167                 -> (not connected)
+      pin  168  P168                 -> (not connected)
+      pin  169  P169                 -> (not connected)
+      pin  170  P170                 -> (not connected)
+      pin  171  P171                 -> (not connected)
+      pin  172  P172                 -> (not connected)
+      pin  173  P173                 -> (not connected)
+      pin  174  P174                 -> (not connected)
+      pin  175  P175                 -> (not connected)
+      pin  176  P176                 -> (not connected)
+      pin  177  P177                 -> (not connected)
+      pin  178  P178                 -> (not connected)
+      pin  179  P179                 -> (not connected)
+      pin  180  P180                 -> (not connected)
+      pin  181  P181                 -> (not connected)
+      pin  182  P182                 -> (not connected)
+      pin  183  P183                 -> (not connected)
+      pin  184  P184                 -> (not connected)
+      pin  185  P185                 -> (not connected)
+      pin  186  P186                 -> (not connected)
+      pin  187  P187                 -> (not connected)
+      pin  188  P188                 -> (not connected)
+      pin  189  P189                 -> (not connected)
+      pin  190  P190                 -> (not connected)
+      pin  191  P191                 -> (not connected)
+      pin  192  P192                 -> (not connected)
+      pin  193  P193                 -> (not connected)
+      pin  194  P194                 -> (not connected)
+      pin  195  P195                 -> (not connected)
+      pin  196  P196                 -> (not connected)
+      pin  197  P197                 -> (not connected)
+      pin  198  P198                 -> (not connected)
+      pin  199  P199                 -> (not connected)
+      pin  200  P200                 -> (not connected)
+      pin  201  P201                 -> (not connected)
+      pin  202  P202                 -> (not connected)
+      pin  203  P203                 -> (not connected)
+      pin  204  P204                 -> (not connected)
+      pin  205  P205                 -> (not connected)
+      pin  206  P206                 -> (not connected)
+      pin  207  P207                 -> (not connected)
+      pin  208  P208                 -> (not connected)
+      pin  209  P209                 -> (not connected)
+      pin  210  P210                 -> (not connected)
+      pin  211  P211                 -> (not connected)
+      pin  212  P212                 -> (not connected)
+      pin  213  P213                 -> (not connected)
+      pin  214  P214                 -> (not connected)
+      pin  215  P215                 -> (not connected)
+      pin  216  P216                 -> (not connected)
+      pin  217  P217                 -> (not connected)
+      pin  218  P218                 -> (not connected)
+      pin  219  P219                 -> (not connected)
+      pin  220  P220                 -> (not connected)
+      pin  221  P221                 -> (not connected)
+      pin  222  P222                 -> (not connected)
+      pin  223  P223                 -> (not connected)
+      pin  224  P224                 -> (not connected)
+      pin  225  P225                 -> (not connected)
+      pin  226  P226                 -> (not connected)
+      pin  227  P227                 -> (not connected)
+      pin  228  P228                 -> (not connected)
+      pin  229  P229                 -> (not connected)
+      pin  230  P230                 -> (not connected)
+      pin  231  P231                 -> (not connected)
+      pin  232  P232                 -> (not connected)
+      pin  233  P233                 -> (not connected)
+      pin  234  P234                 -> (not connected)
+      pin  235  P235                 -> (not connected)
+      pin  236  P236                 -> (not connected)
+      pin  237  P237                 -> (not connected)
+      pin  238  P238                 -> (not connected)
+      pin  239  P239                 -> (not connected)
+      pin  240  P240                 -> (not connected)
+      pin  241  P241                 -> (not connected)
+      pin  242  P242                 -> (not connected)
+      pin  243  P243                 -> (not connected)
+      pin  244  P244                 -> (not connected)
+      pin  245  P245                 -> (not connected)
+      pin  246  P246                 -> (not connected)
+      pin  247  P247                 -> (not connected)
+      pin  248  P248                 -> (not connected)
+      pin  249  P249                 -> (not connected)
+      pin  250  P250                 -> (not connected)
+      pin  251  P251                 -> (not connected)
+      pin  252  P252                 -> (not connected)
+      pin  253  P253                 -> (not connected)
+      pin  254  P254                 -> (not connected)
+      pin  255  P255                 -> (not connected)
+      pin  256  P256                 -> (not connected)
+      pin  257  P257                 -> (not connected)
+      pin  258  P258                 -> (not connected)
+      pin  259  P259                 -> (not connected)
+      pin  260  P260                 -> (not connected)
+      pin  261  P261                 -> (not connected)
+      pin  262  P262                 -> (not connected)
+      pin  263  P263                 -> (not connected)
+      pin  264  P264                 -> (not connected)
+      pin  265  P265                 -> (not connected)
+      pin  266  P266                 -> (not connected)
+      pin  267  P267                 -> (not connected)
+      pin  268  P268                 -> (not connected)
+      pin  269  P269                 -> (not connected)
+      pin  270  P270                 -> (not connected)
+      pin  271  P271                 -> (not connected)
+      pin  272  P272                 -> (not connected)
+      pin  273  P273                 -> (not connected)
+      pin  274  P274                 -> (not connected)
+      pin  275  P275                 -> (not connected)
+      pin  276  P276                 -> (not connected)
+      pin  277  P277                 -> (not connected)
+      pin  278  P278                 -> (not connected)
+      pin  279  P279                 -> (not connected)
+      pin  280  P280                 -> (not connected)
+      pin  281  P281                 -> (not connected)
+      pin  282  P282                 -> (not connected)
+      pin  283  P283                 -> (not connected)
+      pin  284  P284                 -> (not connected)
+      pin  285  P285                 -> (not connected)
+      pin  286  P286                 -> (not connected)
+      pin  287  P287                 -> (not connected)
+      pin  288  P288                 -> (not connected)
 
 ### BMC - ESP32-S3
 --------------------------------------------------------------------------------
 
 C21  (10uF)
       footprint: Capacitor_SMD:C_0805_2012Metric
-      pin    1                        -> GND
-      pin    2                        -> +3V3_ALWAYS
+      pin    1                       -> +3V3_ALWAYS
+      pin    2                       -> GND
 
 C22  (100nF)
       footprint: Capacitor_SMD:C_0402_1005Metric
-      pin    1                        -> +3V3_ALWAYS
-      pin    2                        -> GND
+      pin    1                       -> +3V3_ALWAYS
+      pin    2                       -> GND
+
+JP1  (PROVISIONED)
+      footprint: Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical
+      pin    1  Pin_1                -> +5V_ALT
+      pin    2  Pin_2                -> SW2_POLE
 
 R8  (10k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> +3V3
-      pin    2                        -> Net-(U8-EN)
+      pin    1                       -> +3V3
+      pin    2                       -> HOSTED_RESET
 
 R9  (10k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> +3V3
-      pin    2                        -> Net-(U8-GPIO0)
+      pin    1                       -> +3V3
+      pin    2                       -> U8_BOOT
 
 R10  (10k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> +3V3
-      pin    2                        -> SW_SENSE_1
+      pin    1                       -> +3V3
+      pin    2                       -> SW_SENSE_1
 
 R11  (10k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> +3V3
-      pin    2                        -> SW_SENSE_4
+      pin    1                       -> +3V3
+      pin    2                       -> SW_SENSE_4
 
 SW1  (SSSS711403)
       footprint: teacup-carrier:SW-TH_SSSS711403
-      pin    1  1                     -> SW_SENSE_1
-      pin    2  2                     -> (not connected)
-      pin    3  3                     -> GND
-      pin    4  4                     -> SW_SENSE_4
-      pin    5  5                     -> (not connected)
-      pin    6  6                     -> (not connected)
+      pin    1                       -> SW_SENSE_1
+      pin    2                       -> (not connected)
+      pin    3                       -> GND
+      pin    4                       -> SW_SENSE_4
+      pin    5                       -> (not connected)
+      pin    6                       -> (not connected)
+
+SW2  (SSSS711403)
+      footprint: teacup-carrier:SW-TH_SSSS711403
+      pin    1                       -> EN_SW_BMC
+      pin    2                       -> (not connected)
+      pin    3                       -> SW2_POLE
+      pin    4                       -> EN_SW_ALT
+      pin    5                       -> (not connected)
+      pin    6                       -> (not connected)
 
 U8  (ESP32-S3-WROOM-1-N16R2)
       footprint: teacup-carrier:ESP32-S3-WROOM-1
-      pin    1  GND                   -> GND
-      pin    2  3V3                   -> +3V3_ALWAYS
-      pin    3  EN                    -> Net-(U8-EN)
-      pin    4  GPIO4                 -> I2C_PWR_SDA
-      pin    5  GPIO5                 -> I2C_PWR_SCL
-      pin    6  GPIO6                 -> I2C_ID_SDA
-      pin    7  GPIO7                 -> I2C_ID_SCL
-      pin    8  GPIO15                -> USB_EN1
-      pin    9  GPIO16                -> USB_EN2
-      pin   10  GPIO17                -> UART1_TX
-      pin   11  GPIO18                -> UART1_RX
-      pin   12  GPIO8                 -> BOOTSEL
-      pin   13  GPIO19                -> BMC_USB_DM
-      pin   14  GPIO20                -> BMC_USB_DP
-      pin   15  GPIO3                 -> RESET_EN
-      pin   16  GPIO46                -> (not connected)
-      pin   17  GPIO9                 -> SFC_IO3
-      pin   18  GPIO10                -> SFC_CS
-      pin   19  GPIO11                -> SFC_IO0
-      pin   20  GPIO12                -> SFC_CLK
-      pin   21  GPIO13                -> SFC_IO1
-      pin   22  GPIO14                -> SFC_IO2
-      pin   23  GPIO21                -> PG_SW5V
-      pin   24  GPIO47                -> PG_VCORE
-      pin   25  GPIO48                -> USB_EN3
-      pin   26  GPIO45                -> (not connected)
-      pin   27  GPIO0                 -> Net-(U8-GPIO0)
-      pin   28  SPIIO6                -> SW_SENSE_1
-      pin   29  SPIIO7                -> SW_SENSE_4
-      pin   30  SPIDQS                -> EN_CS_U4
-      pin   31  GPIO38                -> EN_CS_U5
-      pin   32  MTCK                  -> USB_OC1
-      pin   33  MTDO                  -> USB_OC2
-      pin   34  MTDI                  -> USB_OC3
-      pin   35  MTMS                  -> (not connected)
-      pin   36  U0RXD                 -> ESP32_CONSOLE_RX
-      pin   37  U0TXD                 -> ESP32_CONSOLE_TX
-      pin   38  GPIO2                 -> SW5V_EN
-      pin   39  GPIO1                 -> VCORE_SNS
-      pin   40  GND                   -> GND
-      pin   41  GND                   -> GND
+      pin    1  GND                  -> GND
+      pin    2  3V3                  -> +3V3_ALWAYS
+      pin    3  EN                   -> HOSTED_RESET
+      pin    4  GPIO4                -> I2C_PWR_SDA
+      pin    5  GPIO5                -> I2C_PWR_SCL
+      pin    6  GPIO6                -> I2C_ID_SDA
+      pin    7  GPIO7                -> I2C_ID_SCL
+      pin    8  GPIO15               -> HOSTED_SPI_CLK
+      pin    9  GPIO16               -> HOSTED_SPI_MOSI
+      pin   10  GPIO17               -> UART1_TX
+      pin   11  GPIO18               -> UART1_RX
+      pin   12  GPIO8                -> BOOTSEL
+      pin   13  GPIO19               -> BMC_USB_DM
+      pin   14  GPIO20               -> BMC_USB_DP
+      pin   15  GPIO3                -> RESET_EN
+      pin   16  GPIO46               -> SW5V_EN_ALT
+      pin   17  GPIO9                -> SFC_IO3
+      pin   18  GPIO10               -> SFC_CS
+      pin   19  GPIO11               -> SFC_IO0
+      pin   20  GPIO12               -> SFC_CLK
+      pin   21  GPIO13               -> SFC_IO1
+      pin   22  GPIO14               -> SFC_IO2
+      pin   23  GPIO21               -> HOSTED_SPI_MISO
+      pin   24  GPIO47               -> HOSTED_SPI_CS
+      pin   25  GPIO48               -> HOSTED_HANDSHAKE
+      pin   26  GPIO45               -> HOSTED_DATA_READY
+      pin   27  GPIO0                -> U8_BOOT
+      pin   28  SPIIO6               -> EXP_INT
+      pin   29  SPIIO7               -> (not connected)
+      pin   30  SPIDQS               -> EN_CS_U4
+      pin   31  GPIO38               -> EN_CS_U5
+      pin   32  MTCK                 -> USB_OC1
+      pin   33  MTDO                 -> USB_OC2
+      pin   34  MTDI                 -> USB_OC3
+      pin   35  MTMS                 -> (not connected)
+      pin   36  U0RXD                -> ESP32_CONSOLE_RX
+      pin   37  U0TXD                -> ESP32_CONSOLE_TX
+      pin   38  GPIO2                -> SW5V_EN_BMC
+      pin   39  GPIO1                -> VCORE_SNS
+      pin   40  GND                  -> GND
+      pin   41  GND                  -> GND
 
 U9  (TS5A3166)
       footprint: Package_TO_SOT_SMD:SOT-23-5
-      pin    1  NO                    -> NOR_U4_CE
-      pin    2  COM                   -> SFC_CS
-      pin    3  GND                   -> GND
-      pin    4  IN                    -> EN_CS_U4
-      pin    5  V+                    -> +3V3
+      pin    1  NO                   -> NOR_U4_CE
+      pin    2  COM                  -> SFC_CS
+      pin    3  GND                  -> GND
+      pin    4  IN                   -> EN_CS_U4
+      pin    5  V+                   -> +3V3
 
 U10  (TS5A3166)
       footprint: Package_TO_SOT_SMD:SOT-23-5
-      pin    1  NO                    -> NOR_U5_CE
-      pin    2  COM                   -> SFC_CS
-      pin    3  GND                   -> GND
-      pin    4  IN                    -> EN_CS_U5
-      pin    5  V+                    -> +3V3
+      pin    1  NO                   -> NOR_U5_CE
+      pin    2  COM                  -> SFC_CS
+      pin    3  GND                  -> GND
+      pin    4  IN                   -> EN_CS_U5
+      pin    5  V+                   -> +3V3
 
 U11  (DIP-8 Socket)
       footprint: Package_DIP:DIP-8_W7.62mm_Socket
-      pin    1  ~{CS}                 -> NOR_U5_CE
-      pin    2  DO(IO1)               -> SFC_IO1
-      pin    3  IO2                   -> SFC_IO2
-      pin    4  GND                   -> GND
-      pin    5  DI(IO0)               -> SFC_IO0
-      pin    6  CLK                   -> SFC_CLK
-      pin    7  IO3                   -> SFC_IO3
-      pin    8  VCC                   -> +3V3
+      pin    1  ~{CS}                -> NOR_U5_CE
+      pin    2  DO(IO1)              -> SFC_IO1
+      pin    3  IO2                  -> SFC_IO2
+      pin    4  GND                  -> GND
+      pin    5  DI(IO0)              -> SFC_IO0
+      pin    6  CLK                  -> SFC_CLK
+      pin    7  IO3                  -> SFC_IO3
+      pin    8  VCC                  -> +3V3
 
 U12  (TPS2053BDR)
       footprint: Package_SO:SOIC-16_3.9x9.9mm_P1.27mm
-      pin    1  GND                   -> GND
-      pin    2  IN1                   -> USB1_VBUS_IN
-      pin    3  EN1                   -> USB_EN1
-      pin    4  EN2                   -> USB_EN2
-      pin    5  GND                   -> GND
-      pin    6  IN2                   -> USB2_VBUS_IN
-      pin    7  EN3                   -> USB_EN3
-      pin    8  NC                    -> (not connected)
-      pin    9  NC                    -> (not connected)
-      pin   10  NC                    -> (not connected)
-      pin   11  OUT3                  -> USB3_VBUS_OUT
-      pin   12  OC3                   -> USB_OC3
-      pin   13  OC2                   -> USB_OC2
-      pin   14  OUT2                  -> USB2_VBUS_OUT
-      pin   15  OUT1                  -> USB1_VBUS_OUT
-      pin   16  OC1                   -> USB_OC1
+      pin    1  GND                  -> GND
+      pin    2  IN1                  -> USB1_VBUS_IN
+      pin    3  EN1                  -> USB_EN1
+      pin    4  EN2                  -> USB_EN2
+      pin    5  GND                  -> GND
+      pin    6  IN2                  -> USB2_VBUS_IN
+      pin    7  EN3                  -> USB_EN3
+      pin    8  NC                   -> (not connected)
+      pin    9  NC                   -> (not connected)
+      pin   10  NC                   -> (not connected)
+      pin   11  OUT3                 -> USB3_VBUS_OUT
+      pin   12  OC3                  -> USB_OC3
+      pin   13  OC2                  -> USB_OC2
+      pin   14  OUT2                 -> USB2_VBUS_OUT
+      pin   15  OUT1                 -> USB1_VBUS_OUT
+      pin   16  OC1                  -> USB_OC1
+
+U13  (W25Q32JVSS)
+      footprint: Package_SO:SOIC-8_5.23x5.23mm_P1.27mm
+      pin    1  ~{CS}                -> NOR_U4_CE
+      pin    2  DO(IO1)              -> SFC_IO1
+      pin    3  IO2                  -> SFC_IO2
+      pin    4  GND                  -> GND
+      pin    5  DI(IO0)              -> SFC_IO0
+      pin    6  CLK                  -> SFC_CLK
+      pin    7  IO3                  -> SFC_IO3
+      pin    8  VCC                  -> +3V3
+
+U15  (TCA9555PWR)
+      footprint: Package_SO:TSSOP-24_4.4x7.8mm_P0.65mm
+      pin    1  ~{INT}               -> EXP_INT
+      pin    2  A1                   -> GND
+      pin    3  A2                   -> GND
+      pin    4  P00                  -> USB_EN1
+      pin    5  P01                  -> USB_EN2
+      pin    6  P02                  -> USB_EN3
+      pin    7  P03                  -> PG_SW5V
+      pin    8  P04                  -> PG_VCORE
+      pin    9  P05                  -> PG_SW5V_ALT
+      pin   10  P06                  -> SW_SENSE_1
+      pin   11  P07                  -> SW_SENSE_4
+      pin   12  GND                  -> GND
+      pin   13  P10                  -> DCJACK_PRESENT
+      pin   14  P11                  -> (not connected)
+      pin   15  P12                  -> (not connected)
+      pin   16  P13                  -> (not connected)
+      pin   17  P14                  -> (not connected)
+      pin   18  P15                  -> (not connected)
+      pin   19  P16                  -> (not connected)
+      pin   20  P17                  -> (not connected)
+      pin   21  A0                   -> GND
+      pin   22  SCL                  -> I2C_PWR_SCL
+      pin   23  SDA                  -> I2C_PWR_SDA
+      pin   24  VCC                  -> +3V3
 
 ### CARRIER PHYSICAL I/O
 --------------------------------------------------------------------------------
 
 J2  (TYPE-C-31-M-12)
       footprint: Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12
-      pin   A1  GND                   -> GND
-      pin  A12  GND                   -> GND
-      pin   A4  VBUS                  -> +5V_IN
-      pin   A5  CC1                   -> Net-(J2-CC1)
-      pin   A6  D+                    -> BMC_USB_DP
-      pin   A7  D-                    -> BMC_USB_DM
-      pin   A8  SBU1                  -> (not connected)
-      pin   A9  VBUS                  -> +5V_IN
-      pin   B1  GND                   -> GND
-      pin  B12  GND                   -> GND
-      pin   B4  VBUS                  -> +5V_IN
-      pin   B5  CC2                   -> Net-(J2-CC2)
-      pin   B6  D+                    -> BMC_USB_DP
-      pin   B7  D-                    -> BMC_USB_DM
-      pin   B8  SBU2                  -> (not connected)
-      pin   B9  VBUS                  -> +5V_IN
-      pin   S1  SHIELD                -> GND
+      pin   A1  GND                  -> GND
+      pin  A12  GND                  -> GND
+      pin   A4  VBUS                 -> ALTUSB_VBUS
+      pin   A5  CC1                  -> USBC_CC1
+      pin   A6  D+                   -> USBA_HOST_DP
+      pin   A7  D-                   -> USBA_HOST_DM
+      pin   A8  SBU1                 -> (not connected)
+      pin   A9  VBUS                 -> ALTUSB_VBUS
+      pin   B1  GND                  -> GND
+      pin  B12  GND                  -> GND
+      pin   B4  VBUS                 -> ALTUSB_VBUS
+      pin   B5  CC2                  -> USBC_CC2
+      pin   B6  D+                   -> USBA_HOST_DP
+      pin   B7  D-                   -> USBA_HOST_DM
+      pin   B8  SBU2                 -> (not connected)
+      pin   B9  VBUS                 -> ALTUSB_VBUS
+      pin   S1  SHIELD               -> GND
 
 J3  (TE_292303-7)
       footprint: Connector_USB:USB_A_TE_292303-7_Horizontal
-      pin    1  VBUS                  -> USB1_VBUS_OUT
-      pin    2  D-                    -> USBA_HOST_DM
-      pin    3  D+                    -> USBA_HOST_DP
-      pin    4  GND                   -> GND
-      pin    5  Shield                -> GND
+      pin    1  VBUS                 -> USB1_VBUS_OUT
+      pin    2  D-                   -> USBA_HOST_DM
+      pin    3  D+                   -> USBA_HOST_DP
+      pin    4  GND                  -> GND
+      pin    5  Shield               -> GND
 
 J4  (Hirose_DM3D-SF)
       footprint: Connector_Card:microSD_HC_Hirose_DM3D-SF
-      pin    1  DAT2                  -> MSC0_D2
-      pin    2  DAT3/CD               -> MSC0_D3_CD
-      pin    3  CMD                   -> MSC0_CMD
-      pin    4  VDD                   -> +3V3
-      pin    5  CLK                   -> MSC0_CLK
-      pin    6  VSS                   -> GND
-      pin    7  DAT0                  -> MSC0_D0
-      pin    8  DAT1                  -> MSC0_D1
-      pin    9  SHIELD                -> GND
+      pin    1  DAT2                 -> MSC0_D2
+      pin    2  DAT3/CD              -> MSC0_D3_CD
+      pin    3  CMD                  -> MSC0_CMD
+      pin    4  VDD                  -> +3V3
+      pin    5  CLK                  -> MSC0_CLK
+      pin    6  VSS                  -> GND
+      pin    7  DAT0                 -> MSC0_D0
+      pin    8  DAT1                 -> MSC0_D1
+      pin    9  SHIELD               -> GND
 
 J5  (Wuerth_694106301002)
       footprint: Connector_BarrelJack:BarrelJack_Wuerth_6941xx301002
-      pin    1                        -> +5V_IN
-      pin    2                        -> GND
-      pin    3                        -> DCJACK_PRESENT
+      pin    1                       -> DCJACK_VBUS
+      pin    2                       -> GND
+      pin    3                       -> DCJACK_PRESENT
 
 J6  (AudioJack4_Ground)
       footprint: Connector_Audio:Jack_3.5mm_PJ320D_Horizontal
-      pin    G                        -> GND
-      pin   R1                        -> (not connected)
-      pin   R2                        -> (not connected)
-      pin    S                        -> (not connected)
-      pin    T                        -> HPOUTL
+      pin    G                       -> GND
+      pin   R1                       -> (not connected)
+      pin   R2                       -> (not connected)
+      pin    S                       -> (not connected)
+      pin    T                       -> HPOUTL
 
 J7  (SFW15R-2STE1LF)
       footprint: teacup-carrier:FPC-SMD_15P-P1.00_SFW15R-2STE1LF
-      pin    1  1                     -> GND
-      pin    2  2                     -> MIPI0_GPIO
-      pin    3  3                     -> MIPI0_SCCB_SDA
-      pin    4  4                     -> MIPI0_SCCB_SCL
-      pin    5  5                     -> +3V3
-      pin    6  6                     -> GND
-      pin    7  7                     -> MIPI0_D0N
-      pin    8  8                     -> MIPI0_D0P
-      pin    9  9                     -> GND
-      pin   10  10                    -> MIPI0_D1N
-      pin   11  11                    -> MIPI0_D1P
-      pin   12  12                    -> GND
-      pin   13  13                    -> MIPI0_CLKN
-      pin   14  14                    -> MIPI0_CLKP
-      pin   15  15                    -> GND
-      pin   16  16                    -> (not connected)
-      pin   17  17                    -> (not connected)
+      pin    1                       -> GND
+      pin    2                       -> MIPI0_GPIO
+      pin    3                       -> MIPI0_SCCB_SDA
+      pin    4                       -> MIPI0_SCCB_SCL
+      pin    5                       -> +3V3
+      pin    6                       -> GND
+      pin    7                       -> MIPI0_D0N
+      pin    8                       -> MIPI0_D0P
+      pin    9                       -> GND
+      pin   10                       -> MIPI0_D1N
+      pin   11                       -> MIPI0_D1P
+      pin   12                       -> GND
+      pin   13                       -> MIPI0_CLKN
+      pin   14                       -> MIPI0_CLKP
+      pin   15                       -> GND
+      pin   16                       -> (not connected)
+      pin   17                       -> (not connected)
 
 J8  (SFW15R-2STE1LF)
       footprint: teacup-carrier:FPC-SMD_15P-P1.00_SFW15R-2STE1LF
-      pin    1  1                     -> GND
-      pin    2  2                     -> MIPI1_GPIO
-      pin    3  3                     -> MIPI1_SCCB_SDA
-      pin    4  4                     -> MIPI1_SCCB_SCL
-      pin    5  5                     -> +3V3
-      pin    6  6                     -> GND
-      pin    7  7                     -> MIPI1_D0N
-      pin    8  8                     -> MIPI1_D0P
-      pin    9  9                     -> GND
-      pin   10  10                    -> MIPI1_D1N
-      pin   11  11                    -> MIPI1_D1P
-      pin   12  12                    -> GND
-      pin   13  13                    -> MIPI1_CLKN
-      pin   14  14                    -> MIPI1_CLKP
-      pin   15  15                    -> GND
-      pin   16  16                    -> (not connected)
-      pin   17  17                    -> (not connected)
+      pin    1                       -> GND
+      pin    2                       -> MIPI1_GPIO
+      pin    3                       -> MIPI1_SCCB_SDA
+      pin    4                       -> MIPI1_SCCB_SCL
+      pin    5                       -> +3V3
+      pin    6                       -> GND
+      pin    7                       -> MIPI1_D0N
+      pin    8                       -> MIPI1_D0P
+      pin    9                       -> GND
+      pin   10                       -> MIPI1_D1N
+      pin   11                       -> MIPI1_D1P
+      pin   12                       -> GND
+      pin   13                       -> MIPI1_CLKN
+      pin   14                       -> MIPI1_CLKP
+      pin   15                       -> GND
+      pin   16                       -> (not connected)
+      pin   17                       -> (not connected)
+
+J9  (TYPE-C-31-M-12)
+      footprint: Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12
+      pin   A1  GND                  -> GND
+      pin  A12  GND                  -> GND
+      pin   A4  VBUS                 -> +5V_BMC
+      pin   A5  CC1                  -> USBC2_CC1
+      pin   A6  D+                   -> BMC_USB_DP
+      pin   A7  D-                   -> BMC_USB_DM
+      pin   A8  SBU1                 -> (not connected)
+      pin   A9  VBUS                 -> +5V_BMC
+      pin   B1  GND                  -> GND
+      pin  B12  GND                  -> GND
+      pin   B4  VBUS                 -> +5V_BMC
+      pin   B5  CC2                  -> USBC2_CC2
+      pin   B6  D+                   -> BMC_USB_DP
+      pin   B7  D-                   -> BMC_USB_DM
+      pin   B8  SBU2                 -> (not connected)
+      pin   B9  VBUS                 -> +5V_BMC
+      pin   S1  SHIELD               -> GND
+
+Q1  (AO3401A)
+      footprint: Package_TO_SOT_SMD:SOT-23
+      pin    D                       -> +5V_ALT
+      pin    G                       -> Q1_GATE
+      pin    S                       -> DCJACK_VBUS
+
+Q2  (AO3401A)
+      footprint: Package_TO_SOT_SMD:SOT-23
+      pin    D                       -> +5V_ALT
+      pin    G                       -> Q2_GATE
+      pin    S                       -> ALTUSB_VBUS
 
 R12  (5.1k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> Net-(J2-CC1)
-      pin    2                        -> GND
+      pin    1                       -> USBC_CC1
+      pin    2                       -> GND
 
 R13  (5.1k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> Net-(J2-CC2)
-      pin    2                        -> GND
+      pin    1                       -> USBC_CC2
+      pin    2                       -> GND
 
 R14  (10k)
       footprint: Resistor_SMD:R_0402_1005Metric
-      pin    1                        -> +3V3
-      pin    2                        -> DCJACK_PRESENT
+      pin    1                       -> +3V3
+      pin    2                       -> DCJACK_PRESENT
+
+R15  (100k)
+      footprint: Resistor_SMD:R_0402_1005Metric
+      pin    1                       -> Q1_GATE
+      pin    2                       -> GND
+
+R16  (4.7k)
+      footprint: Resistor_SMD:R_0402_1005Metric
+      pin    1                       -> DCJACK_VBUS
+      pin    2                       -> Q2_GATE
+
+R17  (100k)
+      footprint: Resistor_SMD:R_0402_1005Metric
+      pin    1                       -> Q2_GATE
+      pin    2                       -> GND
+
+R18  (5.1k)
+      footprint: Resistor_SMD:R_0402_1005Metric
+      pin    1                       -> USBC2_CC1
+      pin    2                       -> GND
+
+R19  (5.1k)
+      footprint: Resistor_SMD:R_0402_1005Metric
+      pin    1                       -> USBC2_CC2
+      pin    2                       -> GND
+
