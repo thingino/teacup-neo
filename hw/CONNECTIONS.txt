@@ -1093,7 +1093,7 @@ R19  (5.1k)
 --------------------------------------------------------------------------------
 
 J20  (HDR_J20)
-      footprint: Connector_PinHeader_2.54mm:PinHeader_1x11_P2.54mm_Vertical
+      footprint: Connector_PinHeader_2.54mm:PinHeader_2x06_P2.54mm_Vertical
       pin    1  Pin_1                -> GND
       pin    2  Pin_2                -> GMAC0_MDIO
       pin    3  Pin_3                -> GMAC0_MDCK
@@ -1105,9 +1105,10 @@ J20  (HDR_J20)
       pin    9  Pin_9                -> GMAC0_RXDV
       pin   10  Pin_10               -> GMAC0_RXD0
       pin   11  Pin_11               -> GMAC0_RXD1
+      pin   12  Pin_12               -> GND
 
 J21  (HDR_J21)
-      footprint: Connector_PinHeader_2.54mm:PinHeader_1x11_P2.54mm_Vertical
+      footprint: Connector_PinHeader_2.54mm:PinHeader_2x06_P2.54mm_Vertical
       pin    1  Pin_1                -> GND
       pin    2  Pin_2                -> GMAC1_MDIO
       pin    3  Pin_3                -> GMAC1_MDCK
@@ -1119,6 +1120,7 @@ J21  (HDR_J21)
       pin    9  Pin_9                -> GMAC1_RXDV
       pin   10  Pin_10               -> GMAC1_RXD0
       pin   11  Pin_11               -> GMAC1_RXD1
+      pin   12  Pin_12               -> GND
 
 J22  (HDR_J22)
       footprint: Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical
@@ -1145,7 +1147,7 @@ J24  (HDR_J24)
       pin    5  Pin_5                -> UART3_RTS
 
 J25  (HDR_J25)
-      footprint: Connector_PinHeader_2.54mm:PinHeader_1x07_P2.54mm_Vertical
+      footprint: Connector_PinHeader_2.54mm:PinHeader_2x04_P2.54mm_Vertical
       pin    1  Pin_1                -> GND
       pin    2  Pin_2                -> SSI0_CLK
       pin    3  Pin_3                -> SSI0_DT
@@ -1153,6 +1155,7 @@ J25  (HDR_J25)
       pin    5  Pin_5                -> SSI0_CE0
       pin    6  Pin_6                -> SSI0_CE1
       pin    7  Pin_7                -> SSI0_GPC
+      pin    8  Pin_8                -> GND
 
 J26  (HDR_J26)
       footprint: Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical
@@ -1163,7 +1166,7 @@ J26  (HDR_J26)
       pin    5  Pin_5                -> SSI1_CE0
 
 J27  (HDR_J27)
-      footprint: Connector_PinHeader_2.54mm:PinHeader_1x09_P2.54mm_Vertical
+      footprint: Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical
       pin    1  Pin_1                -> GND
       pin    2  Pin_2                -> PWM0
       pin    3  Pin_3                -> PWM1
@@ -1173,6 +1176,7 @@ J27  (HDR_J27)
       pin    7  Pin_7                -> PWM5
       pin    8  Pin_8                -> PWM6
       pin    9  Pin_9                -> PWM7
+      pin   10  Pin_10               -> GND
 
 J28  (HDR_J28)
       footprint: Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical
@@ -1188,7 +1192,7 @@ J29  (HDR_J29)
       pin    5  Pin_5                -> SMB1_SCK
 
 J30  (HDR_J30)
-      footprint: Connector_PinHeader_2.54mm:PinHeader_1x17_P2.54mm_Vertical
+      footprint: Connector_PinHeader_2.54mm:PinHeader_2x09_P2.54mm_Vertical
       pin    1  Pin_1                -> GND
       pin    2  Pin_2                -> GPIO0
       pin    3  Pin_3                -> GPIO1
@@ -1206,9 +1210,10 @@ J30  (HDR_J30)
       pin   15  Pin_15               -> GPIO13
       pin   16  Pin_16               -> GPIO14
       pin   17  Pin_17               -> GPIO15
+      pin   18  Pin_18               -> GND
 
 J31  (HDR_J31)
-      footprint: Connector_PinHeader_2.54mm:PinHeader_1x24_P2.54mm_Vertical
+      footprint: Connector_PinHeader_2.54mm:PinHeader_2x12_P2.54mm_Vertical
       pin    1  Pin_1                -> GND
       pin    2  Pin_2                -> SPARE_P170
       pin    3  Pin_3                -> SPARE_P171
@@ -1235,7 +1240,7 @@ J31  (HDR_J31)
       pin   24  Pin_24               -> SPARE_P192
 
 J32  (HDR_J32)
-      footprint: Connector_PinHeader_2.54mm:PinHeader_1x25_P2.54mm_Vertical
+      footprint: Connector_PinHeader_2.54mm:PinHeader_2x13_P2.54mm_Vertical
       pin    1  Pin_1                -> GND
       pin    2  Pin_2                -> SPARE_P193
       pin    3  Pin_3                -> SPARE_P194
@@ -1261,9 +1266,10 @@ J32  (HDR_J32)
       pin   23  Pin_23               -> SPARE_P214
       pin   24  Pin_24               -> SPARE_P215
       pin   25  Pin_25               -> SPARE_P216
+      pin   26  Pin_26               -> GND
 
 J33  (HDR_J33)
-      footprint: Connector_PinHeader_2.54mm:PinHeader_1x25_P2.54mm_Vertical
+      footprint: Connector_PinHeader_2.54mm:PinHeader_2x13_P2.54mm_Vertical
       pin    1  Pin_1                -> GND
       pin    2  Pin_2                -> SPARE_P217
       pin    3  Pin_3                -> SPARE_P218
@@ -1289,9 +1295,10 @@ J33  (HDR_J33)
       pin   23  Pin_23               -> SPARE_P238
       pin   24  Pin_24               -> SPARE_P239
       pin   25  Pin_25               -> SPARE_P240
+      pin   26  Pin_26               -> GND
 
 J34  (HDR_J34)
-      footprint: Connector_PinHeader_2.54mm:PinHeader_1x25_P2.54mm_Vertical
+      footprint: Connector_PinHeader_2.54mm:PinHeader_2x13_P2.54mm_Vertical
       pin    1  Pin_1                -> GND
       pin    2  Pin_2                -> SPARE_P241
       pin    3  Pin_3                -> SPARE_P242
@@ -1317,9 +1324,10 @@ J34  (HDR_J34)
       pin   23  Pin_23               -> SPARE_P262
       pin   24  Pin_24               -> SPARE_P263
       pin   25  Pin_25               -> SPARE_P264
+      pin   26  Pin_26               -> GND
 
 J35  (HDR_J35)
-      footprint: Connector_PinHeader_2.54mm:PinHeader_1x25_P2.54mm_Vertical
+      footprint: Connector_PinHeader_2.54mm:PinHeader_2x13_P2.54mm_Vertical
       pin    1  Pin_1                -> GND
       pin    2  Pin_2                -> SPARE_P265
       pin    3  Pin_3                -> SPARE_P266
@@ -1345,4 +1353,5 @@ J35  (HDR_J35)
       pin   23  Pin_23               -> SPARE_P286
       pin   24  Pin_24               -> SPARE_P287
       pin   25  Pin_25               -> SPARE_P288
+      pin   26  Pin_26               -> GND
 
