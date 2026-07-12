@@ -24,6 +24,7 @@ STD_LIBS = {
     "Connector_Generic": "/usr/share/kicad/symbols/Connector_Generic.kicad_sym",
     "Connector_Audio": "/usr/share/kicad/symbols/Connector_Audio.kicad_sym",
     "Regulator_Linear": "/usr/share/kicad/symbols/Regulator_Linear.kicad_sym",
+    "Transistor_FET": "/usr/share/kicad/symbols/Transistor_FET.kicad_sym",
 }
 TC = "/home/administrator/projects/teacup-neo/hw/teacup-carrier.kicad_sym"
 
@@ -45,7 +46,9 @@ def paren_block(t, i):
     raise ValueError
 
 def get_symbol_pins(lib_id):
-    """lib_id like 'teacup-carrier:X' or 'Device:R'. Returns [(name, number)]."""
+    """lib_id like 'teacup-carrier:X' or 'Device:R'. Returns [(name, number)].
+    Follows KiCad's (extends "Base") inheritance -- some library symbols
+    (e.g. AO3401A extends TP0610T) carry no pins of their own."""
     libname, symname = lib_id.split(":", 1)
     path = TC if libname == "teacup-carrier" else STD_LIBS[libname]
     text = open(path).read()
@@ -53,6 +56,10 @@ def get_symbol_pins(lib_id):
     if idx == -1:
         raise ValueError(f"symbol {symname} not found in {path}")
     block = paren_block(text, idx)
+    ext = re.search(r'\(extends "([^"]+)"\)', block)
+    if ext and '(pin ' not in block:
+        base_idx = text.find(f'(symbol "{ext.group(1)}"')
+        block = paren_block(text, base_idx)
     pins = []
     # direct pins (single-unit symbols)
     i = 0

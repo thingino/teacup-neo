@@ -931,6 +931,33 @@ from a second manufacturer, **UMW/Youtai Semiconductor, LCSC C347476**, gave
 a clean read — 539,740 in stock, ships now, $0.0365 @ 20+ qty (verified
 2026-07-12) — cite that listing.
 
+**`Q1`/`Q2` symbol fixed to `Transistor_FET:AO3401A` (was `Device:Q_PMOS`,
+decided).** The initial PCB pass found `Q1`/`Q2` (and `J6`) with pins that
+couldn't be assigned a net on the board — root cause: `Device:Q_PMOS` is a
+generic schematic-only placeholder whose pin *numbers* are literally the
+letters `G`/`D`/`S`, never meant to auto-associate with a real footprint's
+numeric pads. Fixed by switching to KiCad's dedicated `AO3401A` symbol,
+which has the manufacturer-correct numeric pins (confirmed against two
+independent sources after KiCad's library and a first visual read of AOS's
+own datasheet diagram initially disagreed on the pin-2-vs-3 assignment:
+**1 = G, 2 = S, 3 = D**) and is already paired with the same `SOT-23`
+footprint used here. `J6`'s unassigned `G` pin is **not** a bug — checked
+against the original single-SoC board's actual fabricated gerbers, which
+used this identical symbol/footprint pair and never routed `G` to copper
+either (the mounting holes are non-plated/NPTH, mechanical-only by
+definition); the jack's shield relies on mechanical contact with a grounded
+enclosure, not a PCB trace. Proven behavior, not a gap.
+
+**Two more broken footprint references found in the same audit, fixed.**
+`D1`/`D2` (PMEG2010ER) hardcoded `Diode_SMD:D_SOD-123W`, which doesn't exist
+in any installed library (`Diode_SMD` wasn't even registered in
+`fp-lib-table`) — corrected to `Diode_SMD:Nexperia_CFP3_SOD-123W`, the real
+footprint for this part's actual package, and registered the library.
+`U13` (W25Q32JVSS) hardcoded `Package_SO:SOIC-8_5.23x5.23mm_P1.27mm` — off
+by a rounding choice from the real footprint's name,
+`Package_SO:SOIC-8_5.3x5.3mm_P1.27mm`. Both are why the PCB's ERC showed 3
+`footprint_link_issues`; 0 after.
+
 **Control plane** (agent-facing API over USB-CDC *and/or* WiFi REST/MQTT/telnet):
 
 | Function | Mechanism | Silicon |

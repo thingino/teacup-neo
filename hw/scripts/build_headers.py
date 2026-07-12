@@ -76,8 +76,46 @@ COL_ORDER = {"J20": "A", "J21": "A", "J25": "A", "J27": "A", "J30": "A",
              "J31": "C", "J32": "C", "J33": "C",
              "J34": "D", "J35": "D"}
 
-def half_span(n_total):
-    return S(2) * ((n_total - 1) / 2)
+# Headers converted from single-row to double-row per explicit user
+# direction: pin ORDER stays exactly the CLUSTERS/SPARE_CLUSTERS signal
+# order (already J1-pin-sequential -- see module docstring), just laid
+# into a Conn_02xNN_Odd_Even footprint instead of Conn_01xNN. KiCad's
+# Odd_Even numbering (pin1=row1/col1, pin2=row1/col2, pin3=row2/col1, ...)
+# means consecutive pin numbers already alternate the two rows one
+# height-step at a time, so "assign signals in J1 order to consecutive
+# pin numbers" is sufficient to get a physically zigzagged, non-crossing
+# breakout -- no separate reordering pass needed.
+DOUBLE_ROW = {"J20", "J21", "J25", "J27", "J30", "J31", "J32", "J33", "J34", "J35"}
+
+def header_geometry(ref, signals):
+    """Resolve lib_id/footprint/pin-count for ref, loading the symbol (so its
+    real pin cache is available) as a side effect. A double-row header needs
+    an EVEN total pin count (2 pins per row); when GND+signals is odd, a
+    second GND pin is appended at the far end (bottom-right, per explicit
+    user direction) rather than leaving a pin unconnected."""
+    double = ref in DOUBLE_ROW
+    base_n = len(signals) + 1  # +1 GND reference pin at the top
+    second_gnd = double and (base_n % 2 == 1)
+    n = base_n + 1 if second_gnd else base_n
+    if double:
+        rows = n // 2
+        symname = f"Conn_02x{rows:02d}_Odd_Even"
+        fp = f"Connector_PinHeader_2.54mm:PinHeader_2x{rows:02d}_P2.54mm_Vertical"
+    else:
+        symname = f"Conn_01x{n:02d}"
+        fp = f"Connector_PinHeader_2.54mm:PinHeader_1x{n:02d}_P2.54mm_Vertical"
+    lib_id = f"Connector_Generic:{symname}"
+    s.ensure_symbol(GEN, symname, lib_id)
+    # Real pin-cache extent, not a hand-rolled formula -- a Conn_02xNN
+    # symbol's origin isn't always the vertical midpoint of its pin field
+    # (true whenever the row count is even), so deriving visual_top/bottom
+    # from the actual loaded pins is correct for both 1- and 2-row symbols
+    # instead of assuming symmetry. Symbol-space y is up; schematic y is
+    # down (unrotated placement), hence the sign flip.
+    pins = s.pin_cache[lib_id]
+    top_off = -max(p[3] for p in pins)
+    bot_off = -min(p[3] for p in pins)
+    return lib_id, fp, n, second_gnd, top_off, bot_off
 
 def place_header(ref, title, signals, x, y_center):
     # KiCad schematic Y increases DOWNWARD -- "visual_top" is the SMALLER
@@ -86,18 +124,17 @@ def place_header(ref, title, signals, x, y_center):
     # (caught by rendering a PDF and looking at it, not by the automated
     # checkers -- check_overlaps.py only knows about labels/properties, not
     # plain (text) elements).
-    n = len(signals) + 1  # +1 GND reference pin at the top
-    lib_id = f"Connector_Generic:Conn_01x{n:02d}"
-    s.ensure_symbol(GEN, f"Conn_01x{n:02d}", lib_id)
-    fp = f"Connector_PinHeader_2.54mm:PinHeader_1x{n:02d}_P2.54mm_Vertical"
-    hs = half_span(n)
-    visual_top = y_center - hs
-    visual_bottom = y_center + hs
+    lib_id, fp, n, second_gnd, top_off, bot_off = header_geometry(ref, signals)
+    visual_top = y_center + top_off
+    visual_bottom = y_center + bot_off
     s.place(lib_id, ref, f"HDR_{ref}", x, y_center, 0, footprint=fp,
             ref_at=(x + S(3), visual_bottom + S(2), 0),
             value_at=(x + S(3), visual_top - S(2), 0))
     s.text(title, x - S(2), visual_top - S(5), 0, size=1.5, bold=True)
-    # pin 1 = GND reference; pins 2..n = signals, top to bottom
+    # pin 1 = GND reference; pins 2..len(signals)+1 = signals, top to bottom;
+    # a trailing 2nd GND (if needed to fill out the double-row footprint)
+    # lands on the last pin number, which Odd_Even numbering always puts at
+    # the opposite (bottom-right) corner from pin 1.
     p1 = s.pin(lib_id, x, y_center, 0, "1")
     d1 = s.pin_dir(lib_id, "1")
     s.flag("GND", p1, ref[1:], d1)
@@ -105,7 +142,10 @@ def place_header(ref, title, signals, x, y_center):
         p = s.pin(lib_id, x, y_center, 0, str(i + 2))
         d = s.pin_dir(lib_id, str(i + 2))
         s.label(sig, p[0], p[1], LABEL_ANGLE[d], global_=True)
-    return hs
+    if second_gnd:
+        pn = s.pin(lib_id, x, y_center, 0, str(n))
+        dn = s.pin_dir(lib_id, str(n))
+        s.flag("GND", pn, ref[1:], dn)
 
 # Stack each column top-to-bottom (in CLUSTERS list order) with a running
 # cursor tracking the smallest unused y so far, sized to each header's
@@ -116,12 +156,11 @@ GAP = S(10)
 for ref, title, signals in CLUSTERS + SPARE_CLUSTERS:
     col = COL_ORDER[ref]
     x = COL_X[col]
-    n = len(signals) + 1
-    hs = half_span(n)
+    _, _, _, _, top_off, bot_off = header_geometry(ref, signals)
     top_pad = S(5)  # room for the title text above visual_top
-    y_center = cursors[col] + top_pad + hs
+    y_center = cursors[col] + top_pad - top_off  # solves visual_top == cursor + top_pad
     place_header(ref, title, signals, x, y_center)
-    cursors[col] = y_center + hs + GAP
+    cursors[col] = y_center + bot_off + GAP
 
 out = s.render("Pin Breakout Headers", str(uuid.uuid4()), "/2a3f9c11-6b4d-4e5a-9c3e-headers000001", "6", paper="A2")
 open("/home/administrator/projects/teacup-neo/hw/sheets/headers.kicad_sch", "w").write(out)

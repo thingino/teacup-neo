@@ -12,6 +12,7 @@ CONNLIB = "/usr/share/kicad/symbols/Connector.kicad_sym"
 AUDIO = "/usr/share/kicad/symbols/Connector_Audio.kicad_sym"
 DEV = "/usr/share/kicad/symbols/Device.kicad_sym"
 PWR = "/usr/share/kicad/symbols/power.kicad_sym"
+FETLIB = "/usr/share/kicad/symbols/Transistor_FET.kicad_sym"
 
 def S(n):
     return round(n * GRID, 2)
@@ -25,7 +26,18 @@ s.ensure_symbol(AUDIO, "AudioJack4_Ground", "Connector_Audio:AudioJack4_Ground")
 s.ensure_symbol(TC, "SFW15R-2STE1LF_C3167933", "teacup-carrier:SFW15R-2STE1LF_C3167933")
 s.ensure_symbol(DEV, "R", "Device:R")
 s.ensure_symbol(DEV, "C", "Device:C")
-s.ensure_symbol(DEV, "Q_PMOS", "Device:Q_PMOS")
+# AO3401A's real pin data lives in TP0610T (it "extends" that base symbol in
+# KiCad's library -- an inheritance schgen's simple text loader doesn't
+# resolve), so load TP0610T's body but cache/rename it under the AO3401A
+# lib_id via ensure_symbol's existing rename mechanism. This makes ERC flag
+# a harmless "Symbol 'AO3401A' doesn't match copy in library" warning
+# (expected: the cached copy is a flattened expansion, not a byte-identical
+# "extends" reference) -- clears with a one-click "Update Symbols from
+# Library" in the GUI if it bothers you; pins/footprint are already
+# correct either way. Per-instance
+# footprint/value overrides in place() make the borrowed block's own
+# (irrelevant) default properties harmless.
+s.ensure_symbol(FETLIB, "TP0610T", "Transistor_FET:AO3401A")
 s.ensure_symbol(PWR, "GND", "power:GND")
 s.ensure_symbol(PWR, "+3V3", "power:+3V3")
 
@@ -121,32 +133,44 @@ vert2("Device:C", "C27", "10uF", S(65), S(100), "+5V_BMC", GNDF, "Capacitor_SMD:
 # sits close to its own source and it stays off -- deterministic hardware
 # priority, no firmware involved. AO3401A-class P-FET: SOT-23, Vgs(th)
 # ~-0.9V, plenty of margin off a 5V rail (see docs/UNIVERSAL.md sourcing).
-Q_PMOS = "Device:Q_PMOS"
+#
+# Uses the dedicated Transistor_FET:AO3401A library symbol, not the generic
+# Device:Q_PMOS -- Q_PMOS's pin NUMBERS are the letters "G"/"D"/"S"
+# themselves (a schematic-only placeholder, never meant to auto-associate
+# with a real footprint's numeric pads), so a PCB pass found 6 pins with no
+# net assigned at all. AO3401A has real numeric pins (1=G, 2=S, 3=D --
+# confirmed against AOS's own datasheet pinout diagram AND an independent
+# third-party pin table, since KiCad's library and my own reading of the
+# datasheet graphic initially disagreed on the 2-vs-3 assignment) and is
+# already paired with the same SOT-23 footprint used here. Same pin
+# geometry as Q_PMOS at each position, so only the lookup string changes.
+AO3401A = "Transistor_FET:AO3401A"
+AO_G, AO_S, AO_D = "1", "2", "3"
 
-def q_pin(lib_id, x, y, letter, spec, angle=0):
-    p = s.pin(lib_id, x, y, angle, letter)
-    d = s.pin_dir(lib_id, letter)
+def q_pin(lib_id, x, y, num, spec, angle=0):
+    p = s.pin(lib_id, x, y, angle, num)
+    d = s.pin_dir(lib_id, num)
     if isinstance(spec, tuple):
         s.flag(spec[1], p, "Q", d)
     else:
         s.label(spec, p[0], p[1], LABEL_ANGLE[d], global_=spec not in LOCAL_NETS)
 
 q1x, q1y = S(90), S(130)
-s.place(Q_PMOS, "Q1", "AO3401A", q1x, q1y, 0,
+s.place(AO3401A, "Q1", "AO3401A", q1x, q1y, 0,
         footprint="Package_TO_SOT_SMD:SOT-23",
         ref_at=(q1x - S(8), q1y - S(3), 0), value_at=(q1x - S(8), q1y + S(3), 0))
-q_pin(Q_PMOS, q1x, q1y, "S", "DCJACK_VBUS")
-q_pin(Q_PMOS, q1x, q1y, "D", "+5V_ALT")
-q_pin(Q_PMOS, q1x, q1y, "G", "Q1_GATE")
+q_pin(AO3401A, q1x, q1y, AO_S, "DCJACK_VBUS")
+q_pin(AO3401A, q1x, q1y, AO_D, "+5V_ALT")
+q_pin(AO3401A, q1x, q1y, AO_G, "Q1_GATE")
 vert2("Device:R", "R15", "100k", q1x, S(145), "Q1_GATE", GNDF, "Resistor_SMD:R_0402_1005Metric")
 
 q2x, q2y = S(105), S(130)
-s.place(Q_PMOS, "Q2", "AO3401A", q2x, q2y, 0,
+s.place(AO3401A, "Q2", "AO3401A", q2x, q2y, 0,
         footprint="Package_TO_SOT_SMD:SOT-23",
         ref_at=(q2x - S(8), q2y - S(3), 0), value_at=(q2x - S(8), q2y + S(3), 0))
-q_pin(Q_PMOS, q2x, q2y, "S", "ALTUSB_VBUS")
-q_pin(Q_PMOS, q2x, q2y, "D", "+5V_ALT")
-q_pin(Q_PMOS, q2x, q2y, "G", "Q2_GATE")
+q_pin(AO3401A, q2x, q2y, AO_S, "ALTUSB_VBUS")
+q_pin(AO3401A, q2x, q2y, AO_D, "+5V_ALT")
+q_pin(AO3401A, q2x, q2y, AO_G, "Q2_GATE")
 vert2("Device:R", "R16", "4.7k", S(105), S(145), "DCJACK_VBUS", "Q2_GATE", "Resistor_SMD:R_0402_1005Metric")
 vert2("Device:R", "R17", "100k", S(114), S(145), "Q2_GATE", GNDF, "Resistor_SMD:R_0402_1005Metric")
 # Bulk/bypass cap at the OR'd output node, before +5V_ALT reaches U14

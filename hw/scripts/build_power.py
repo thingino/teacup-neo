@@ -181,14 +181,14 @@ s.ensure_symbol(DEV, "D_Schottky", "Device:D_Schottky")
 
 d1x, d1y = S(108), S(10)
 s.place(DSCH, "D1", "PMEG2010ER", d1x, d1y, 0,
-        footprint="Diode_SMD:D_SOD-123W",
+        footprint="Diode_SMD:Nexperia_CFP3_SOD-123W",
         ref_at=(d1x, d1y - S(3), 0), value_at=(d1x, d1y + S(3), 0))
 pin_net(s.pin(DSCH, d1x, d1y, 0, "1"), "U5_VIN", "left")     # K
 pin_net(s.pin(DSCH, d1x, d1y, 0, "2"), "+5V_BMC", "right")   # A
 
 d2x, d2y = S(108), S(22)
 s.place(DSCH, "D2", "PMEG2010ER", d2x, d2y, 0,
-        footprint="Diode_SMD:D_SOD-123W",
+        footprint="Diode_SMD:Nexperia_CFP3_SOD-123W",
         ref_at=(d2x, d2y - S(3), 0), value_at=(d2x, d2y + S(3), 0))
 pin_net(s.pin(DSCH, d2x, d2y, 0, "1"), "U5_VIN", "left")     # K
 pin_net(s.pin(DSCH, d2x, d2y, 0, "2"), "+5V_ALT", "right")   # A
@@ -243,7 +243,7 @@ pin_net(P4(9), "+5V_SW", "right")            # VOUT
 pin_net(P4(10), "+5V_SW", "right")           # VOUT
 pin_net(P4(11), "+5V_BMC", "right")          # VIN
 
-vert2("Device:C", "C13", "1nF_TBD", S(132), S(96), "U4_CT", GNDF, "Capacitor_SMD:C_0402_1005Metric")
+vert2("Device:C", "C13", "1nF", S(132), S(96), "U4_CT", GNDF, "Capacitor_SMD:C_0402_1005Metric")
 vert2("Device:R", "R4", "10k", S(150), S(96), P3V3F, "PG_SW5V", "Resistor_SMD:R_0402_1005Metric")
 
 # BMC-branch EN arbitration: GPIO drives through a 1k series resistor,
@@ -277,7 +277,7 @@ pin_net(P14(9), "+5V_SW", "right")           # VOUT
 pin_net(P14(10), "+5V_SW", "right")          # VOUT
 pin_net(P14(11), "+5V_ALT", "right")         # VIN
 
-vert2("Device:C", "C23", "1nF_TBD", S(192), S(96), "U14_CT", GNDF, "Capacitor_SMD:C_0402_1005Metric")
+vert2("Device:C", "C23", "1nF", S(192), S(96), "U14_CT", GNDF, "Capacitor_SMD:C_0402_1005Metric")
 vert2("Device:R", "R24", "10k", S(210), S(96), P3V3F, "PG_SW5V_ALT", "Resistor_SMD:R_0402_1005Metric")
 
 # ALT-branch EN arbitration -- same topology as the BMC branch, plus SW2's
