@@ -25,6 +25,11 @@ family), full **A1** support (dual SATA 3.0 + dual GbE), dedicated camera-SoC
 peripherals (audio, PWM/IR-cut/IR-LED, JTAG), carrier test points, and the
 pin-breakout budget.
 
+**Building it:** [`docs/BUILD.md`](docs/BUILD.md) is the agent-facing build playbook —
+the headless KiCad pipeline (footprints → symbols → label-driven schematics →
+`pcbnew` netlist apply → FreeRouting → manufacturing), the per-phase verification
+gates, and the gotchas already proven on the T41 board in [`old/`](old/).
+
 **Status: design / specification.** No open or deferred design questions remain; the
 next step is the geography-first pin assignment against a carrier floorplan.
 
