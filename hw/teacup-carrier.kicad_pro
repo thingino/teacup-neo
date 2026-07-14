@@ -494,6 +494,7 @@
   "net_settings": {
     "classes": [
       {
+        "clearance": 0.15,
         "name": "Default",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": -1,
