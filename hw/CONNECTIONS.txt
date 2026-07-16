@@ -417,8 +417,8 @@ J1  (AH58893-T9B10-3F)
       pin    3  P3                   -> VCORE
       pin    4  P4                   -> VCORE
       pin    5  P5                   -> GND
-      pin    6  P6                   -> GND
-      pin    7  P7                   -> GND
+      pin    6  P6                   -> MICLP
+      pin    7  P7                   -> HPOUTL
       pin    8  P8                   -> GND
       pin    9  P9                   -> VDDR
       pin   10  P10                  -> VDDR
@@ -428,38 +428,38 @@ J1  (AH58893-T9B10-3F)
       pin   14  P14                  -> +3V3
       pin   15  P15                  -> +1V8
       pin   16  P16                  -> +1V8
-      pin   17  P17                  -> +5V_MODEA
-      pin   18  P18                  -> +5V_MODEA
+      pin   17  P17                  -> +5V_SW
+      pin   18  P18                  -> +5V_SW
       pin   19  P19                  -> GND
-      pin   20  P20                  -> GND
-      pin   21  P21                  -> GND
+      pin   20  P20                  -> USBA_HOST_DP
+      pin   21  P21                  -> USBA_HOST_DM
       pin   22  P22                  -> GND
-      pin   23  P23                  -> I2C_ID_SDA
-      pin   24  P24                  -> I2C_ID_SCL
-      pin   25  P25                  -> VCORE_SNS
-      pin   26  P26                  -> BOOTSEL
-      pin   27  P27                  -> RESET_EN
-      pin   28  P28                  -> SFC_CS
-      pin   29  P29                  -> SFC_CLK
-      pin   30  P30                  -> SFC_IO0
-      pin   31  P31                  -> SFC_IO1
-      pin   32  P32                  -> SFC_IO2
+      pin   23  P23                  -> VCORE_SNS
+      pin   24  P24                  -> HOSTED_DATA_READY
+      pin   25  P25                  -> HOSTED_HANDSHAKE
+      pin   26  P26                  -> HOSTED_SPI_CS
+      pin   27  P27                  -> HOSTED_SPI_MISO
+      pin   28  P28                  -> SFC_IO2
+      pin   29  P29                  -> SFC_IO1
+      pin   30  P30                  -> SFC_CLK
+      pin   31  P31                  -> SFC_IO0
+      pin   32  P32                  -> SFC_CS
       pin   33  P33                  -> SFC_IO3
-      pin   34  P34                  -> UART1_TX
-      pin   35  P35                  -> UART1_RX
+      pin   34  P34                  -> RESET_EN
+      pin   35  P35                  -> BOOTSEL
       pin   36  P36                  -> GND
       pin   37  P37                  -> GND
       pin   38  P38                  -> GND
       pin   39  P39                  -> GND
-      pin   40  P40                  -> USBA_HOST_DP
-      pin   41  P41                  -> USBA_HOST_DM
-      pin   42  P42                  -> HOSTED_RESET
-      pin   43  P43                  -> HOSTED_SPI_CLK
+      pin   40  P40                  -> GND
+      pin   41  P41                  -> GND
+      pin   42  P42                  -> UART1_RX
+      pin   43  P43                  -> UART1_TX
       pin   44  P44                  -> HOSTED_SPI_MOSI
-      pin   45  P45                  -> HOSTED_SPI_MISO
-      pin   46  P46                  -> HOSTED_SPI_CS
-      pin   47  P47                  -> HOSTED_HANDSHAKE
-      pin   48  P48                  -> HOSTED_DATA_READY
+      pin   45  P45                  -> HOSTED_SPI_CLK
+      pin   46  P46                  -> I2C_ID_SCL
+      pin   47  P47                  -> I2C_ID_SDA
+      pin   48  P48                  -> HOSTED_RESET
       pin   49  P49                  -> GND
       pin   50  P50                  -> MSC0_D1
       pin   51  P51                  -> GND
@@ -471,9 +471,9 @@ J1  (AH58893-T9B10-3F)
       pin   57  P57                  -> GND
       pin   58  P58                  -> GND
       pin   59  P59                  -> GND
-      pin   60  P60                  -> MIPI0_GPIO
-      pin   61  P61                  -> MIPI0_SCCB_SDA
-      pin   62  P62                  -> MIPI0_SCCB_SCL
+      pin   60  P60                  -> MIPI0_SCCB_SDA
+      pin   61  P61                  -> MIPI0_SCCB_SCL
+      pin   62  P62                  -> MIPI0_GPIO
       pin   63  P63                  -> GND
       pin   64  P64                  -> MIPI0_CLKP
       pin   65  P65                  -> MIPI0_CLKN
@@ -581,8 +581,8 @@ J1  (AH58893-T9B10-3F)
       pin  167  P167                 -> GPIO14
       pin  168  P168                 -> GPIO15
       pin  169  P169                 -> GND
-      pin  170  P170                 -> HPOUTL
-      pin  171  P171                 -> MICLP
+      pin  170  P170                 -> GND
+      pin  171  P171                 -> GND
       pin  172  P172                 -> GND
       pin  173  P173                 -> SPARE_P173
       pin  174  P174                 -> SPARE_P174
@@ -961,7 +961,9 @@ J4  (Hirose_DM3D-SF)
       pin    6  VSS                  -> GND
       pin    7  DAT0                 -> MSC0_D0
       pin    8  DAT1                 -> MSC0_D1
-      pin    9  SHIELD               -> GND
+      pin    9  DET_B                -> GND
+      pin   10  DET_A                -> MSC0_CD
+      pin   11  SHIELD               -> (not connected)
 
 J5  (Wuerth_694106301002)
       footprint: Connector_BarrelJack:BarrelJack_Wuerth_6941xx301002
@@ -1106,6 +1108,11 @@ R19  (5.1k)
       footprint: Resistor_SMD:R_0402_1005Metric
       pin    1                       -> USBC2_CC2
       pin    2                       -> GND
+
+R43  (1M)
+      footprint: Resistor_SMD:R_0402_1005Metric
+      pin    1                       -> +3V3
+      pin    2                       -> MSC0_CD
 
 ### PIN BREAKOUT HEADERS
 --------------------------------------------------------------------------------

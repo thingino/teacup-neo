@@ -20,7 +20,7 @@ def S(n):
 s = Sheet()
 s.ensure_symbol(CONNLIB, "USB_C_Receptacle_USB2.0_16P", "Connector:USB_C_Receptacle_USB2.0_16P")
 s.ensure_symbol(CONNLIB, "USB_A", "Connector:USB_A")
-s.ensure_symbol(CONNLIB, "Micro_SD_Card", "Connector:Micro_SD_Card")
+s.ensure_symbol(CONNLIB, "Micro_SD_Card_Det2", "Connector:Micro_SD_Card_Det2")
 s.ensure_symbol(CONNLIB, "Barrel_Jack_Switch", "Connector:Barrel_Jack_Switch")
 s.ensure_symbol(AUDIO, "AudioJack4_Ground", "Connector_Audio:AudioJack4_Ground")
 s.ensure_symbol(TC, "SFW15R-2STE1LF_C3167933", "teacup-carrier:SFW15R-2STE1LF_C3167933")
@@ -195,7 +195,17 @@ ic_pins(J3, j3x, j3y, {
 s.flag("GND", s.pin_pos(J3, j3x, j3y, 0, "5"), "I", s.pin_dir(J3, "5"), text_steps=6)
 
 # ============ MicroSD (J4): boot media, MSC0 to interposer SoC ============
-J4 = "Connector:Micro_SD_Card"
+# Det2 variant used instead of the plain 9-pin symbol so pin 10 (this
+# footprint's real physical CD/card-detect pad, confirmed against TeaCup
+# 3.3's J2 -- pad 9 is SHIELD, pad 10 is CD) has somewhere to attach; the
+# symbol's own default pin names (DET_B/DET_A/SH) don't match our
+# footprint's actual pin functions, so they're overridden here to the
+# real ones (9=SHIELD->GND, 10=CD) same as everywhere else in this
+# project -- symbol pin NAMES are cosmetic, only the NUMBER has to match
+# the footprint pad. The "SH" pin has no corresponding numbered pad on
+# this footprint and is left unmapped. R43 (1M, matches TeaCup 3.3's R22)
+# pulls MSC0_CD up to +3V3. Per explicit user direction, 2026-07-16.
+J4 = "Connector:Micro_SD_Card_Det2"
 j4x, j4y = S(40), S(125)
 s.place(J4, "J4", "Hirose_DM3D-SF", j4x, j4y, 0,
         footprint="Connector_Card:microSD_HC_Hirose_DM3D-SF",
@@ -204,7 +214,10 @@ ic_pins(J4, j4x, j4y, {
     "1": "MSC0_D2", "2": "MSC0_D3_CD", "3": "MSC0_CMD",
     "4": P3V3F, "5": "MSC0_CLK", "6": GNDF,
     "7": "MSC0_D0", "8": "MSC0_D1", "9": GNDF,
+    "10": "MSC0_CD",
 })
+vert2("Device:R", "R43", "1M", j4x + S(20), j4y, P3V3F, "MSC0_CD",
+      "Resistor_SMD:R_0402_1005Metric")
 
 # ============ DC power jack (J5): raw 5V input, alternate to USB-C ============
 # Pin assignment per Barrel_Jack_Switch generic symbol convention (center

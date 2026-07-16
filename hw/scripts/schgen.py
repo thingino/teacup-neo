@@ -16,6 +16,21 @@ import re, uuid, math
 
 GRID = 1.27  # 50 mil, per explicit user requirement
 
+# Fixed, arbitrary namespace for deriving deterministic per-symbol UUIDs (see
+# Sheet.place()) -- symbol UUIDs used to be uuid.uuid4() (fresh, random,
+# different on every regeneration), which meant PCB footprints could never
+# stay linked to their schematic symbol across a rebuild: KiCad's "Update PCB
+# from Schematic" matches by that UUID (via the footprint's (path ...)
+# field), so every regeneration silently orphaned every existing footprint
+# and offered to place a full duplicate set instead. Reference designators
+# are unique across this whole (flat, single-sheet) schematic by
+# construction, so hashing the ref into a stable UUID keeps the same symbol
+# identity across rebuilds without changing anything else.
+UUID_NAMESPACE = uuid.UUID("a1b2c3d4-1111-4000-8000-000000000000")
+
+def stable_uuid(ref):
+    return str(uuid.uuid5(UUID_NAMESPACE, ref))
+
 def snap(v):
     return round(round(v / GRID) * GRID, 3)
 
@@ -101,7 +116,7 @@ class Sheet:
         property at (symbol angle + property angle), so to force
         horizontal text on a rotated symbol pass angle=(-symbol_angle)%360."""
         assert_grid_xy(x, y, f"place({lib_id} {ref})")
-        u = str(uuid.uuid4())
+        u = stable_uuid(ref)
         ref_hide = " hide" if hide_ref else ""
         val_hide = " hide" if hide_value else ""
         rx, ry, rang = ref_at if ref_at else (x, y-3, 0)

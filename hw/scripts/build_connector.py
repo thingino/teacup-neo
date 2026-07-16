@@ -40,20 +40,38 @@ s.place(CONN, "J1", "AH58893-T9B10-3F", u1x, u1y, 0, unit=1,
 
 UNIT1 = {
     1: "VCORE", 2: "VCORE", 3: "VCORE", 4: "VCORE",
-    5: "GND", 6: "GND", 7: "GND", 8: "GND",
+    # 6/7 carry HPOUTL/MICLP (moved from unit 4's old 170/171, which become
+    # GND in their place -- see there), per explicit user direction,
+    # 2026-07-15. Still GND-flanked on both sides (5, 8), same isolation
+    # intent as before. 6/7 swapped (MICLP/HPOUTL instead of HPOUTL/MICLP)
+    # per explicit user direction, 2026-07-15.
+    5: "GND", 6: "MICLP", 7: "HPOUTL", 8: "GND",
     9: "VDDR", 10: "VDDR",
     11: "GND", 12: "GND",
     13: "+3V3", 14: "+3V3",
     15: "+1V8", 16: "+1V8",
-    17: "+5V_MODEA", 18: "+5V_MODEA",
-    19: "GND", 20: "GND", 21: "GND", 22: "GND",
-    23: "I2C_ID_SDA", 24: "I2C_ID_SCL",
-    25: "VCORE_SNS",
-    26: "BOOTSEL",
-    27: "RESET_EN",
-    28: "SFC_CS", 29: "SFC_CLK",
-    30: "SFC_IO0", 31: "SFC_IO1", 32: "SFC_IO2", 33: "SFC_IO3",
-    34: "UART1_TX", 35: "UART1_RX",
+    # 17/18 carry +5V_SW (the arbitrated switched-5V rail, U4/U14's shared
+    # VOUT -- see docs/UNIVERSAL.md power architecture), not a dedicated
+    # mode-A-only rail: +5V_MODEA was redundant since a self-contained
+    # module already needs its own bare-bench power input regardless, per
+    # explicit user direction, 2026-07-16.
+    17: "+5V_SW", 18: "+5V_SW",
+    # 20/21 carry the shared USB host data pair (moved from unit 1's old
+    # 40/41, which become GND in their place -- see there), per explicit
+    # user direction, 2026-07-16. Still GND-flanked on both sides (19, 22).
+    19: "GND", 20: "USBA_HOST_DP", 21: "USBA_HOST_DM", 22: "GND",
+    # 23-35: reordered so U8 (ESP32-S3-WROOM-1)'s ascending pin order maps
+    # to J1's descending pin order in this group (U8 pin39->J1 23, pin26->
+    # 24, pin25->25, pin24->26, pin23->27, pin22->28, pin21->29, pin20->30,
+    # pin19->31, pin18->32, pin17->33, pin15->34, pin12->35), per explicit
+    # user direction, 2026-07-16.
+    23: "VCORE_SNS", 24: "HOSTED_DATA_READY",
+    25: "HOSTED_HANDSHAKE",
+    26: "HOSTED_SPI_CS",
+    27: "HOSTED_SPI_MISO",
+    28: "SFC_IO2", 29: "SFC_IO1",
+    30: "SFC_CLK", 31: "SFC_IO0", 32: "SFC_CS", 33: "SFC_IO3",
+    34: "RESET_EN", 35: "BOOTSEL",
     36: "GND", 37: "GND", 38: "GND", 39: "GND",
 }
 # Pins 40-48: explicitly reserved -- the per-SoC GPIO/peripheral superset
@@ -61,23 +79,25 @@ UNIT1 = {
 # labeled placeholders keep them visible without inventing assignments.
 for p in range(40, 49):
     UNIT1[p] = f"RESERVED_P{p}"
-# 40/41 carry the shared USB host data pair (J2 alt-USB-C + J3 USB-A, same
-# logical port) across to the interposer SoC -- placed next to the pin
-# 36-39 GND run for flanking. Not RESERVED: these are live global nets.
-UNIT1[40] = "USBA_HOST_DP"
-UNIT1[41] = "USBA_HOST_DM"
+# 40/41: moved to 20/21 (see there), became GND in their place per
+# explicit user direction, 2026-07-16.
+UNIT1[40] = "GND"
+UNIT1[41] = "GND"
 # 42-48: ESP-Hosted full-duplex SPI + reset (BMC ESP32-S3 <-> interposer
 # SoC), now one contiguous block -- HOSTED_RESET used to sit alone at
 # unit 2 pin 86 (see there for why), far from its own SPI/handshake
 # siblings; moved here next to them per explicit user direction,
-# 2026-07-15.
-UNIT1[42] = "HOSTED_RESET"
-UNIT1[43] = "HOSTED_SPI_CLK"
+# 2026-07-15. Reordered again so U8's ascending pin order maps to J1's
+# descending pin order in this group (U8 pin11->J1 42, pin10->43, pin9->
+# 44, pin8->45, pin7->46, pin6->47, pin3->48), per explicit user
+# direction, 2026-07-16.
+UNIT1[42] = "UART1_RX"
+UNIT1[43] = "UART1_TX"
 UNIT1[44] = "HOSTED_SPI_MOSI"
-UNIT1[45] = "HOSTED_SPI_MISO"
-UNIT1[46] = "HOSTED_SPI_CS"
-UNIT1[47] = "HOSTED_HANDSHAKE"
-UNIT1[48] = "HOSTED_DATA_READY"
+UNIT1[45] = "HOSTED_SPI_CLK"
+UNIT1[46] = "I2C_ID_SCL"
+UNIT1[47] = "I2C_ID_SDA"
+UNIT1[48] = "HOSTED_RESET"
 
 for num, spec in UNIT1.items():
     unit_pin(u1x, u1y, 1, num, spec)
@@ -101,11 +121,10 @@ UNIT2 = {
     49: "GND", 50: "MSC0_D1", 51: "GND",
     52: "MSC0_D0", 53: "MSC0_CLK", 54: "MSC0_CMD", 55: "MSC0_D3_CD", 56: "MSC0_D2",
     57: "GND",
-    # Headphone moved down to the 170s (see UNIT4) to sit beside MICLP --
-    # geography-first (UNIVERSAL.md SS8: "audio by the codec block"), so
-    # both audio nets exit the socket already clustered instead of one
-    # sitting alone here. 58 folds into the existing GND bracket either
-    # side of it (57/59), same analog-isolation intent, now a solid block.
+    # Headphone/mic (HPOUTL/MICLP) don't live here -- moved to unit 1 pins
+    # 6/7 as of 2026-07-15 (previously unit 4's 170/171, and before that
+    # this same pin 58). 58 folds into the existing GND bracket either side
+    # of it (57/59), same analog-isolation intent, now a solid block.
     58: "GND",
     59: "GND",
     # MIPI0: GPIO/SCCB (low-speed control, no special isolation needed)
@@ -123,7 +142,10 @@ UNIT2 = {
     # to arrive at the FFC, so they can be routed straight across without
     # having to cross over each other (which is what forces vias). Per
     # explicit user direction, 2026-07-13.
-    60: "MIPI0_GPIO", 61: "MIPI0_SCCB_SDA", 62: "MIPI0_SCCB_SCL",
+    # 60-62 rotated left by one (SDA/SCL/GPIO instead of GPIO/SDA/SCL),
+    # matching MIPI1's same rotation, per explicit user direction,
+    # 2026-07-15.
+    60: "MIPI0_SCCB_SDA", 61: "MIPI0_SCCB_SCL", 62: "MIPI0_GPIO",
     63: "GND", 64: "MIPI0_CLKP", 65: "MIPI0_CLKN",
     66: "GND", 67: "MIPI0_D1P", 68: "MIPI0_D1N",
     69: "GND", 70: "MIPI0_D0P", 71: "MIPI0_D0N",
@@ -229,16 +251,11 @@ UNIT4[152] = "GND"
 for i in range(16):
     UNIT4[153 + i] = f"GPIO{i}"
 UNIT4[169] = "GND"
-# P170-171 claimed for the audio pair (HPOUTL relocated down from unit 2's
-# old pin 58, MICLP for J6's mic signal per TeaCup(C)3.3's J10) -- geography
-# -first (UNIVERSAL.md SS8: "audio by the codec block"), clustered together
-# rather than HPOUTL sitting alone far from MICLP. GND on both sides (169,
-# 172) preserves the same "sensitive analog, isolated on both sides" intent
-# HPOUTL had at its old position. Carved out of the spare range the same
-# way every other named signal above already is, not left in the SPARE_P
-# breakout with the genuinely-unclaimed pins.
-UNIT4[170] = "HPOUTL"
-UNIT4[171] = "MICLP"
+# HPOUTL/MICLP moved from here (170/171) to unit 1 pins 6/7 -- per explicit
+# user direction, 2026-07-15. 170/171 revert to GND (matching 169/172, so
+# this whole run is now a solid GND block rather than leaving a gap).
+UNIT4[170] = "GND"
+UNIT4[171] = "GND"
 UNIT4[172] = "GND"
 for p in range(173, 193):
     UNIT4[p] = f"SPARE_P{p}"
