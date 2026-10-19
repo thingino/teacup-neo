@@ -26,22 +26,22 @@ finger,carrier_net,t31_pin,t31_pin_name_or_note
 25,HOSTED_HANDSHAKE,,"BMC-only (crosses to U8, not the interposer SoC)"
 26,HOSTED_SPI_CS,,"BMC-only (crosses to U8, not the interposer SoC)"
 27,HOSTED_SPI_MISO,,"BMC-only (crosses to U8, not the interposer SoC)"
-28,SFC_IO2,,"BMC-only (crosses to U8, not the interposer SoC)"
-29,SFC_IO1,,"BMC-only (crosses to U8, not the interposer SoC)"
-30,SFC_CLK,,"BMC-only (crosses to U8, not the interposer SoC)"
-31,SFC_IO0,,"BMC-only (crosses to U8, not the interposer SoC)"
-32,SFC_CS,,"BMC-only (crosses to U8, not the interposer SoC)"
-33,SFC_IO3,,"BMC-only (crosses to U8, not the interposer SoC)"
-34,RESET_EN,,"BMC-only (crosses to U8, not the interposer SoC)"
-35,BOOTSEL,,"BMC-only (crosses to U8, not the interposer SoC)"
+28,SFC_IO2,,BMC/carrier-flash only: T31 SFC has no IO2 pin (needs pull-up on carrier)
+29,SFC_IO1,46,SFC_DR_PA24 (SoC receive = flash DO); shared bus with BMC (U8) + carrier flash
+30,SFC_CLK,48,SFC_CLK_PA27; shared bus with BMC (U8) + carrier flash
+31,SFC_IO0,47,SFC_DT_PA23 (SoC transmit = flash DI); shared bus with BMC (U8) + carrier flash
+32,SFC_CS,45,SFC_CE0_PA28; reaches carrier flash via TS5A3166 switches; shared with BMC (U8)
+33,SFC_IO3,,BMC/carrier-flash only: T31 SFC has no IO3 pin (needs pull-up on carrier)
+34,RESET_EN,,"BMC -> SoC PPRST_ (pin 7) via R23 1k on net SPARE_P173; drive OPEN-DRAIN only (1.8V domain, abs max 1.98V)"
+35,BOOTSEL,,BMC -> SoC BOOT_SEL0 (pin 67) via R24 1k on net SPARE_P179 (3.3V domain)
 36,GND,,GND
 37,GND,,GND
 38,GND,,GND
 39,GND,,GND
 40,GND,,GND
 41,GND,,GND
-42,UART1_RX,,"BMC-only (crosses to U8, not the interposer SoC)"
-43,UART1_TX,,"BMC-only (crosses to U8, not the interposer SoC)"
+42,UART1_RX,,"BMC RX <- SoC UART1 TXD (pin 74, net SPARE_P181) via R25 1k"
+43,UART1_TX,,"BMC TX -> SoC UART1 RXD (pin 73, net SPARE_P180) via R26 1k"
 44,HOSTED_SPI_MOSI,,"BMC-only (crosses to U8, not the interposer SoC)"
 45,HOSTED_SPI_CLK,,"BMC-only (crosses to U8, not the interposer SoC)"
 46,I2C_ID_SCL,,"BMC-only (crosses to U8, not the interposer SoC)"
@@ -122,16 +122,16 @@ finger,carrier_net,t31_pin,t31_pin_name_or_note
 121,GMAC1_RXD0,,not present on T31ZX
 122,GMAC1_RXD1,,not present on T31ZX
 123,GND,,GND
-124,SSI0_CLK,48,SFC_CLK_PA27
-125,SSI0_DT,47,SFC_DT_PA23
-126,SSI0_DR,46,SFC_DR_PA24
-127,SSI0_CE0,45,SFC_CE0_PA28
+124,SSI0_CLK,,unused on T31ZX (SoC flash bus moved to SFC fingers 29-32); net name kept for other SoCs
+125,SSI0_DT,,unused on T31ZX (SoC flash bus moved to SFC fingers 29-32); net name kept for other SoCs
+126,SSI0_DR,,unused on T31ZX (SoC flash bus moved to SFC fingers 29-32); net name kept for other SoCs
+127,SSI0_CE0,,unused on T31ZX (SoC flash bus moved to SFC fingers 29-32); net name kept for other SoCs
 128,SSI0_CE1,,no T31 pin available (lost to a higher-priority function)
 129,SSI0_GPC,,no T31 pin available (lost to a higher-priority function)
 130,GND,,GND
 131,SSI1_CLK,82,SSI1_CLK_DMIC_DAT0_PB29
-132,SSI1_DT,,no T31 pin available (lost to a higher-priority function)
-133,SSI1_DR,,no T31 pin available (lost to a higher-priority function)
+132,SSI1_DT,,SoC SSI1_DT shares pin 1 (PWM0): tied to the PWM0 net via R27 0R
+133,SSI1_DR,,SoC SSI1_DR shares pin 2 (PWM1): tied to the PWM1 net via R28 0R
 134,SSI1_CE0,81,SSI1_CE0_DMIC_DAT1_PB30
 135,GND,,GND
 136,PWM0,1,PWM0_SSI1_DT_PB17
@@ -172,7 +172,7 @@ finger,carrier_net,t31_pin,t31_pin_name_or_note
 171,GND,,GND
 172,GND,,GND
 173,SPARE_P173,7,"PPRST_ (PPRST_ (warm reset, no predefined carrier net))"
-174,SPARE_P174,8,"EFUSE_AVD (EFUSE_AVD (per explicit user direction -- broken out, not grounded))"
+174,SPARE_P174,8,EFUSE_AVD (datasheet 0V/1.8V): grounded by R22 0R; remove R22 to apply 1.8V for eFuse programming
 175,SPARE_P175,11,"SA2_PA18 (PA18 (free pin, no predefined net))"
 176,SPARE_P176,17,"SA0_DVP_PCLK_PWM0_PA14 (PWM0 alt-location, unneeded (PWM0 already at pin1))"
 177,SPARE_P177,22,SD1_DVP_D7_UART1_RXD_PA07 (native UART1_RXD (J1 UART1_RX goes to BMC instead))

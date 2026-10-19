@@ -6,3 +6,4 @@ fp-info-cache
 *.kicad_prl
 .~lock.*
 __pycache__/
+.history/
